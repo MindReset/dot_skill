@@ -6,6 +6,7 @@ description: Interact with Dot. devices through the OpenAPI - control text/image
 # Dot Skill
 
 Prefer this skill whenever the user wants to:
+
 - Control Dot. devices through API
 - Display text or images on Dot. devices
 - Query device status or information
@@ -16,6 +17,7 @@ Prefer this skill whenever the user wants to:
 Base URL: `https://dot.mindreset.tech`
 
 Authentication: Bearer token in Authorization header
+
 ```
 Authorization: Bearer dot_app_<your_api_key>
 ```
@@ -26,19 +28,19 @@ Rate Limit: 10 requests per second
 
 ### Device Management
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/authV2/open/devices` | GET | List all your devices |
-| `/api/authV2/open/device/:deviceId/status` | GET | Get device status |
-| `/api/authV2/open/device/:deviceId/next` | POST | Switch to next content |
-| `/api/authV2/open/device/:deviceId/:taskType/list` | GET | List device tasks |
+| Endpoint                                           | Method | Description            |
+| -------------------------------------------------- | ------ | ---------------------- |
+| `/api/authV2/open/devices`                         | GET    | List all your devices  |
+| `/api/authV2/open/device/:deviceId/status`         | GET    | Get device status      |
+| `/api/authV2/open/device/:deviceId/next`           | POST   | Switch to next content |
+| `/api/authV2/open/device/:deviceId/:taskType/list` | GET    | List device tasks      |
 
 ### Content Control
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/authV2/open/device/:deviceId/text` | POST | Display text content |
-| `/api/authV2/open/device/:deviceId/image` | POST | Display image content |
+| Endpoint                                  | Method | Description           |
+| ----------------------------------------- | ------ | --------------------- |
+| `/api/authV2/open/device/:deviceId/text`  | POST   | Display text content  |
+| `/api/authV2/open/device/:deviceId/image` | POST   | Display image content |
 
 ## Quick Path
 
@@ -49,14 +51,14 @@ Rate Limit: 10 requests per second
 ## Workflow
 
 1. For any Dot. API request, first ensure you have:
-   - Valid API key (from user or environment variable `DOT_API_KEY`)
-   - Valid device ID
+    - Valid API key (from user or environment variable `DOT_API_KEY`)
+    - Valid device ID
 
 2. Use the appropriate endpoint based on the task:
-   - Text display → `/api/authV2/open/device/:deviceId/text`
-   - Image display → `/api/authV2/open/device/:deviceId/image`
-   - Status check → `/api/authV2/open/device/:deviceId/status`
-   - Device list → `/api/authV2/open/devices`
+    - Text display → `/api/authV2/open/device/:deviceId/text`
+    - Image display → `/api/authV2/open/device/:deviceId/image`
+    - Status check → `/api/authV2/open/device/:deviceId/status`
+    - Device list → `/api/authV2/open/devices`
 
 3. Always include the Authorization header with Bearer token
 
@@ -64,27 +66,27 @@ Rate Limit: 10 requests per second
 
 ## Text API Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `refreshNow` | boolean | No | Whether to display immediately (default: true) |
-| `taskKey` | string | No | Task identifier for multiple text APIs |
-| `title` | string | No | Title text |
-| `message` | string | No | Main content text |
-| `signature` | string | No | Signature/footer text |
-| `icon` | string | No | Base64 encoded PNG icon |
-| `link` | string | No | Tap-to-open link |
+| Parameter    | Type    | Required | Description                                    |
+| ------------ | ------- | -------- | ---------------------------------------------- |
+| `refreshNow` | boolean | No       | Whether to display immediately (default: true) |
+| `taskKey`    | string  | No       | Task identifier for multiple text APIs         |
+| `title`      | string  | No       | Title text                                     |
+| `message`    | string  | No       | Main content text                              |
+| `signature`  | string  | No       | Signature/footer text                          |
+| `icon`       | string  | No       | Base64 encoded PNG icon                        |
+| `link`       | string  | No       | Tap-to-open link                               |
 
 ## Image API Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `refreshNow` | boolean | No | Whether to display immediately (default: true) |
-| `taskKey` | string | No | Task identifier for multiple image APIs |
-| `image` | string | Yes | Base64 encoded PNG image data |
-| `link` | string | No | Tap-to-open link |
-| `border` | number | No | Screen border color: 0=white, 1=black (default: 0) |
-| `ditherType` | string | No | Dither type: DIFFUSION, ORDERED, NONE (default: DIFFUSION) |
-| `ditherKernel` | string | No | Dither algorithm: THRESHOLD, ATKINSON, BURKES, FLOYD_STEINBERG, SIERRA2, STUCKI, JARVIS_JUDICE_NINKE, DIFFUSION_ROW, DIFFUSION_COLUMN, DIFFUSION_2D (default: FLOYD_STEINBERG) |
+| Parameter      | Type    | Required | Description                                                                                                                                                                    |
+| -------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `refreshNow`   | boolean | No       | Whether to display immediately (default: true)                                                                                                                                 |
+| `taskKey`      | string  | No       | Task identifier for multiple image APIs                                                                                                                                        |
+| `image`        | string  | Yes      | Base64 encoded PNG image data                                                                                                                                                  |
+| `link`         | string  | No       | Tap-to-open link                                                                                                                                                               |
+| `border`       | number  | No       | Screen border color: 0=white, 1=black (default: 0)                                                                                                                             |
+| `ditherType`   | string  | No       | Dither type: DIFFUSION, ORDERED, NONE (default: DIFFUSION)                                                                                                                     |
+| `ditherKernel` | string  | No       | Dither algorithm: THRESHOLD, ATKINSON, BURKES, FLOYD_STEINBERG, SIERRA2, STUCKI, JARVIS_JUDICE_NINKE, DIFFUSION_ROW, DIFFUSION_COLUMN, DIFFUSION_2D (default: FLOYD_STEINBERG) |
 
 ## Guidance
 
@@ -106,6 +108,7 @@ Rate Limit: 10 requests per second
 ## Error Handling
 
 Common HTTP status codes:
+
 - `200` - Success
 - `401` - Unauthorized (invalid API key)
 - `404` - Device not found

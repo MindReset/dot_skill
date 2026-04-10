@@ -2,7 +2,7 @@ name: dot-skill
 description: |
   Dot Skill - Interact with Dot. devices through the OpenAPI. 
   Control text/image display, query device status, and manage devices.
-  
+
   Key capabilities:
   - Display text content on devices
   - Display image content on devices  
@@ -13,7 +13,7 @@ description: |
 
 instructions: |
   When user wants to interact with Dot. devices:
-  
+
   1. First obtain API key (ask user or from DOT_API_KEY env var)
   2. Obtain device ID from user
   3. Use appropriate endpoint for the task:
@@ -23,35 +23,35 @@ instructions: |
      - GET /api/authV2/open/devices - List devices
      - POST /api/authV2/open/device/:deviceId/next - Next content
      - GET /api/authV2/open/device/:deviceId/:taskType/list - List tasks
-  
+
   4. Always include: Authorization: Bearer dot_app_<api_key>
   5. Rate limit: 10 requests/second
-  
+
   For text API, parameters include: refreshNow, title, message, signature, icon (base64 PNG), link
   For image API, parameters include: refreshNow, image (base64 PNG required), link, border (0/1), ditherType, ditherKernel
 
 tools:
-  - type: http
-    name: dot_openapi
-    base_url: https://dot.mindreset.tech
-    headers:
-      Content-Type: application/json
-    endpoints:
-      - path: /api/authV2/open/devices
-        method: GET
-        description: List all devices
-      - path: /api/authV2/open/device/{deviceId}/status
-        method: GET
-        description: Get device status
-      - path: /api/authV2/open/device/{deviceId}/next
-        method: POST
-        description: Switch to next content
-      - path: /api/authV2/open/device/{deviceId}/text
-        method: POST
-        description: Display text content
-      - path: /api/authV2/open/device/{deviceId}/image
-        method: POST
-        description: Display image content
-      - path: /api/authV2/open/device/{deviceId}/{taskType}/list
-        method: GET
-        description: List device tasks
+- type: http
+  name: dot_openapi
+  base_url: https://dot.mindreset.tech
+  headers:
+    Content-Type: application/json
+  endpoints:
+  - path: /api/authV2/open/devices
+    method: GET
+    description: List all devices
+  - path: /api/authV2/open/device/{deviceId}/status
+    method: GET
+    description: Get device status
+  - path: /api/authV2/open/device/{deviceId}/next
+    method: POST
+    description: Switch to next content
+  - path: /api/authV2/open/device/{deviceId}/text
+    method: POST
+    description: Display text content
+  - path: /api/authV2/open/device/{deviceId}/image
+    method: POST
+    description: Display image content
+  - path: /api/authV2/open/device/{deviceId}/{taskType}/list
+    method: GET
+    description: List device tasks
