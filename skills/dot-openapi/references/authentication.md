@@ -2,7 +2,7 @@
 
 ## Overview
 
-All Dot. OpenAPI requests require authentication using a Bearer token in the Authorization header.
+All Dot Skill requests require authentication using a Bearer token in the Authorization header.
 
 ## Getting an API Key
 

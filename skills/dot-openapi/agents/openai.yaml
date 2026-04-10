@@ -1,6 +1,6 @@
-name: dot-openapi
+name: dot-skill
 description: |
-  Interact with Dot. devices through the OpenAPI. 
+  Dot Skill - Interact with Dot. devices through the OpenAPI. 
   Control text/image display, query device status, and manage devices.
   
   Key capabilities:

@@ -1,12 +1,14 @@
-# Dot. OpenAPI Skill
+# Dot Skill
 
-[English](./README.md) | [简体中文](./README.zh-CN.md)
+**语言:** [English](./README.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
 
 用于 AI 助手通过 OpenAPI 与 Dot. 设备交互的 Skill。
 
-## 什么是 Dot. OpenAPI？
+📚 **官方文档**: [https://dot.mindreset.tech/docs/service/open/skill](https://dot.mindreset.tech/docs/service/open/skill)
 
-Dot. OpenAPI 允许您：
+## 什么是 Dot Skill？
+
+Dot Skill 允许您：
 
 - **控制设备内容**：在 Dot. 设备上显示文本、图像等内容
 - **查询设备状态**：获取设备电池、WiFi 信号和当前显示内容的实时信息
@@ -23,40 +25,40 @@ Dot. OpenAPI 允许您：
 ### 使用 `npx skills add` 安装（推荐）
 
 ```bash
-npx skills add <your-github-username>/dot-openapi-skill
+npx skills add https://github.com/MindReset/dot_skill.git
 ```
 
 仅安装此 skill：
 
 ```bash
-npx skills add <your-github-username>/dot-openapi-skill --skill dot-openapi
+npx skills add https://github.com/MindReset/dot_skill.git --skill dot-openapi
 ```
 
 ### 手动安装
 
 ```bash
 mkdir -p ~/.agents/skills
-ln -sfn /path/to/dot-openapi-skill/skills/dot-openapi ~/.agents/skills/dot-openapi
+ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
 ```
 
 安装后请重启您的 agent。
 
 ## 快速开始
 
-1. **获取 API 密钥**：按照 [docs/get_api_key.md](docs/get_api_key.md) 的指南操作
-2. **获取设备 ID**：按照 [docs/get_device_id.md](docs/get_device_id.md) 的指南操作
-3. **开始使用 API**：查看 [docs/api_reference.md](docs/api_reference.md) 了解所有可用接口
+1. **获取 API 密钥**：按照[官方文档](https://dot.mindreset.tech/docs/service/open/get_api)操作
+2. **获取设备 ID**：按照[官方文档](https://dot.mindreset.tech/docs/service/open/get_device_id)操作
+3. **开始使用 API**：查看 [references/api_reference.md](skills/dot-openapi/references/api_reference.md) 了解所有可用接口
 
 ## API 概览
 
-| 接口 | 方法 | 描述 |
-|------|------|------|
-| `/api/authV2/open/devices` | GET | 列出所有设备 |
-| `/api/authV2/open/device/:deviceId/status` | GET | 获取设备状态 |
-| `/api/authV2/open/device/:deviceId/next` | POST | 切换到下一个内容 |
-| `/api/authV2/open/device/:deviceId/text` | POST | 显示文本内容 |
-| `/api/authV2/open/device/:deviceId/image` | POST | 显示图像内容 |
-| `/api/authV2/open/device/:deviceId/:taskType/list` | GET | 列出设备任务 |
+| 接口                                               | 方法 | 描述             |
+| -------------------------------------------------- | ---- | ---------------- |
+| `/api/authV2/open/devices`                         | GET  | 列出所有设备     |
+| `/api/authV2/open/device/:deviceId/status`         | GET  | 获取设备状态     |
+| `/api/authV2/open/device/:deviceId/next`           | POST | 切换到下一个内容 |
+| `/api/authV2/open/device/:deviceId/text`           | POST | 显示文本内容     |
+| `/api/authV2/open/device/:deviceId/image`          | POST | 显示图像内容     |
+| `/api/authV2/open/device/:deviceId/:taskType/list` | GET  | 列出设备任务     |
 
 ## 辅助脚本
 

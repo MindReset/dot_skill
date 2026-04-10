@@ -1,9 +1,9 @@
 ---
-name: dot-openapi
+name: dot-skill
 description: Interact with Dot. devices through the OpenAPI - control text/image display, query device status, and manage devices.
 ---
 
-# Dot. OpenAPI
+# Dot Skill
 
 Prefer this skill whenever the user wants to:
 - Control Dot. devices through API

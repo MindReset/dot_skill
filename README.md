@@ -1,12 +1,14 @@
-# Dot. OpenAPI Skill
+# Dot Skill
 
-[English](./README.md) | [简体中文](./README.zh-CN.md)
+**Languages:** [English](./README.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
 
 A skill for AI agents to interact with Dot. devices through the OpenAPI.
 
-## What is Dot. OpenAPI?
+📚 **Official Documentation**: [https://dot.mindreset.tech/docs/service/open/skill](https://dot.mindreset.tech/docs/service/open/skill)
 
-Dot. OpenAPI allows you to:
+## What is Dot Skill?
+
+Dot Skill allows you to:
 
 - **Control device content**: Display text, images, and other content on your Dot. devices
 - **Query device status**: Get real-time information about device battery, WiFi signal, and current display
@@ -23,40 +25,40 @@ Dot. OpenAPI allows you to:
 ### Install with `npx skills add` (Recommended)
 
 ```bash
-npx skills add <your-github-username>/dot-openapi-skill
+npx skills add https://github.com/MindReset/dot_skill.git
 ```
 
 Install only this skill:
 
 ```bash
-npx skills add <your-github-username>/dot-openapi-skill --skill dot-openapi
+npx skills add https://github.com/MindReset/dot_skill.git --skill dot-openapi
 ```
 
 ### Manual Install
 
 ```bash
 mkdir -p ~/.agents/skills
-ln -sfn /path/to/dot-openapi-skill/skills/dot-openapi ~/.agents/skills/dot-openapi
+ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
 ```
 
 Restart your agent after installation.
 
 ## Quick Start
 
-1. **Get your API key**: Follow the guide in [docs/get_api_key.md](docs/get_api_key.md)
-2. **Get your device ID**: Follow the guide in [docs/get_device_id.md](docs/get_device_id.md)
-3. **Start using the API**: See [docs/api_reference.md](docs/api_reference.md) for all available endpoints
+1. **Get your API key**: Follow the [official documentation](https://dot.mindreset.tech/docs/service/open/get_api)
+2. **Get your device ID**: Follow the [official documentation](https://dot.mindreset.tech/docs/service/open/get_device_id)
+3. **Start using the API**: See [references/api_reference.md](skills/dot-openapi/references/api_reference.md) for all available endpoints
 
 ## API Overview
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/authV2/open/devices` | GET | List all your devices |
-| `/api/authV2/open/device/:deviceId/status` | GET | Get device status |
-| `/api/authV2/open/device/:deviceId/next` | POST | Switch to next content |
-| `/api/authV2/open/device/:deviceId/text` | POST | Display text content |
-| `/api/authV2/open/device/:deviceId/image` | POST | Display image content |
-| `/api/authV2/open/device/:deviceId/:taskType/list` | GET | List device tasks |
+| Endpoint                                           | Method | Description            |
+| -------------------------------------------------- | ------ | ---------------------- |
+| `/api/authV2/open/devices`                         | GET    | List all your devices  |
+| `/api/authV2/open/device/:deviceId/status`         | GET    | Get device status      |
+| `/api/authV2/open/device/:deviceId/next`           | POST   | Switch to next content |
+| `/api/authV2/open/device/:deviceId/text`           | POST   | Display text content   |
+| `/api/authV2/open/device/:deviceId/image`          | POST   | Display image content  |
+| `/api/authV2/open/device/:deviceId/:taskType/list` | GET    | List device tasks      |
 
 ## Helper Scripts
 
