@@ -65,17 +65,19 @@ def format_devices(devices):
     print(f"\nFound {len(devices)} device(s):\n")
     
     # Print header
-    print(f"{'Device ID':<20} {'Series':<10} {'Model':<15} {'Edition':<10}")
-    print("-" * 60)
+    print(f"{'Device ID':<20} {'Alias':<20} {'Location':<20} {'Series':<10} {'Model':<15} {'Edition':<10}")
+    print("-" * 100)
     
     # Print devices
     for device in devices:
         device_id = device.get('id', 'N/A')
+        alias = device.get('alias') or 'N/A'
+        location = device.get('location') or 'N/A'
         series = device.get('series', 'N/A')
         model = device.get('model', 'N/A')
         edition = device.get('edition', 'N/A')
         
-        print(f"{device_id:<20} {series:<10} {model:<15} {edition:<10}")
+        print(f"{device_id:<20} {alias:<20} {location:<20} {series:<10} {model:<15} {edition:<10}")
 
 
 def main():

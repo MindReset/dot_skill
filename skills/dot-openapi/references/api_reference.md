@@ -34,6 +34,8 @@ GET /api/authV2/open/devices
 ```json
 [
   {
+    "alias": "My Dot",
+    "location": "Study",
     "series": "quote",
     "model": "quote_0",
     "edition": 1,
@@ -44,6 +46,8 @@ GET /api/authV2/open/devices
 
 | Field | Type | Description |
 |-------|------|-------------|
+| `alias` | string \| null | Device alias |
+| `location` | string \| null | Device location |
 | `series` | string | Device series (e.g., "quote") |
 | `model` | string | Device model (e.g., "quote_0") |
 | `edition` | number | Device edition (1 or 2) |
