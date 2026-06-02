@@ -136,6 +136,8 @@ Display text content on the device.
 POST /api/authV2/open/device/:deviceId/text
 ```
 
+> Before calling this endpoint, make sure the device already has a Text API content item in its loop task in Dot. App Content Studio.
+
 ### Path Parameters
 
 | Parameter | Type | Required | Description |
@@ -149,10 +151,28 @@ POST /api/authV2/open/device/:deviceId/text
 | `refreshNow` | boolean | No | `true` | Display immediately or queue |
 | `taskKey` | string | No | - | Task identifier for multiple text APIs |
 | `title` | string | No | - | Title text |
-| `message` | string | No | - | Main content text |
+| `message` | string | No | - | Main content text. Supports `\n` and `\t` |
 | `signature` | string | No | - | Signature/footer text |
-| `icon` | string | No | - | Base64 encoded PNG icon |
+| `icon` | string | No | - | Base64 encoded PNG icon or full http(s) image URL |
 | `link` | string | No | - | Tap-to-open link |
+| `styles` | object | No | - | Optional typography overrides for `title`, `message`, and `signature` |
+
+### Text Style Object
+
+`styles.title` and `styles.signature` support `fontFamily`, `fontSize`, and `fontWeight`. `styles.message` additionally supports `lineHeight`.
+
+| Field | Type | Required | Range | Description |
+|-------|------|----------|-------|-------------|
+| `fontFamily` | string | No | See supported fonts | Font family registered by the V2 renderer |
+| `fontSize` | number | No | 8-48 | Font size in px |
+| `fontWeight` | number | No | 100, 200, 300, 400, 500, 600, 700, 800, 900 | Font weight |
+| `lineHeight` | number | No | 0.8-3 | Unitless line height for `styles.message` only |
+
+Supported `fontFamily` values:
+
+`ChillDuanSans`, `ChillKSans`, `ChillKSanslatin`, `ChillOrganic`, `ChillRoundF`, `ChillRoundGothic`, `Cusong16`, `DotGothic16`, `FusionPixel8`, `FusionPixel10`, `FusionPixel12`, `Liusong24`, `LogoSCUnboundedSans`, `MaokenYingBiKaiShuJ0.09`, `PlayfairDisplay`, `Quan8`, `Unifont16`, `UnifontExMono16`, `XiaoyaPixel12`, `Zihunzhoukesong`, `Zpix12`.
+
+Use `\n` for new lines and `\t` for tabs in the JSON payload. If the JSON is wrapped inside another string literal, escape them as `\\n` and `\\t` in that outer layer.
 
 ### Example Request
 
@@ -164,7 +184,12 @@ curl -X POST \
   -d '{
     "title": "验证码小助手",
     "message": "一个来自「少数派」的验证码\n205112",
-    "signature": "2025年8月4日 19:58"
+    "signature": "2025年8月4日 19:58",
+    "styles": {
+      "title": { "fontFamily": "ChillDuanSans", "fontSize": 30, "fontWeight": 700 },
+      "message": { "fontFamily": "FusionPixel12", "fontSize": 22, "lineHeight": 1.25 },
+      "signature": { "fontFamily": "ChillDuanSans", "fontSize": 16 }
+    }
   }'
 ```
 
@@ -190,6 +215,8 @@ Display image content on the device.
 POST /api/authV2/open/device/:deviceId/image
 ```
 
+> Before calling this endpoint, make sure the device already has an Image API content item in its loop task in Dot. App Content Studio.
+
 ### Path Parameters
 
 | Parameter | Type | Required | Description |
@@ -202,7 +229,7 @@ POST /api/authV2/open/device/:deviceId/image
 |-----------|------|----------|---------|-------------|
 | `refreshNow` | boolean | No | `true` | Display immediately or queue |
 | `taskKey` | string | No | - | Task identifier for multiple image APIs |
-| `image` | string | Yes | - | Base64 encoded PNG image data |
+| `image` | string | Yes | - | Base64 encoded PNG image data or full http(s) image URL |
 | `link` | string | No | - | Tap-to-open link |
 | `border` | number | No | `0` | Screen border color: 0=white, 1=black |
 | `ditherType` | string | No | `"DIFFUSION"` | Dither type: DIFFUSION, ORDERED, NONE |

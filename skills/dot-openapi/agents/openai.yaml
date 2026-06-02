@@ -16,7 +16,8 @@ instructions: |
 
   1. First obtain API key (ask user or from DOT_API_KEY env var)
   2. Obtain device ID from user
-  3. Use appropriate endpoint for the task:
+  3. For Text API or Image API writes, ensure the matching content has already been added to the device loop task in Dot. App Content Studio
+  4. Use appropriate endpoint for the task:
      - POST /api/authV2/open/device/:deviceId/text - Display text
      - POST /api/authV2/open/device/:deviceId/image - Display image
      - GET /api/authV2/open/device/:deviceId/status - Get status
@@ -24,11 +25,11 @@ instructions: |
      - POST /api/authV2/open/device/:deviceId/next - Next content
      - GET /api/authV2/open/device/:deviceId/:taskType/list - List tasks
 
-  4. Always include: Authorization: Bearer dot_app_<api_key>
-  5. Rate limit: 10 requests/second
+  5. Always include: Authorization: Bearer dot_app_<api_key>
+  6. Rate limit: 10 requests/second
 
-  For text API, parameters include: refreshNow, title, message, signature, icon (base64 PNG), link
-  For image API, parameters include: refreshNow, image (base64 PNG required), link, border (0/1), ditherType, ditherKernel
+  For text API, parameters include: refreshNow, title, message (supports \n and \t), signature, icon (base64 PNG or full http(s) image URL), link, taskKey, styles.title/signature with fontFamily/fontSize/fontWeight, and styles.message with fontFamily/fontSize/fontWeight/lineHeight
+  For image API, parameters include: refreshNow, image (base64 PNG or full http(s) image URL), link, border (0/1), ditherType, ditherKernel, taskKey
 
 tools:
 - type: http
