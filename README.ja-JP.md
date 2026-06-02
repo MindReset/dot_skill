@@ -10,7 +10,7 @@ AI アシスタントが OpenAPI を通じて Dot. デバイスと連携する�
 
 Dot Skill を使用すると、以下のことができます：
 
-- **デバイスコンテンツの制御**: Dot. デバイスにテキスト、画像などのコンテンツを表示
+- **デバイスコンテンツの制御**: Dot. デバイスにテキスト、画像、Canvas API レイアウトなどのコンテンツを表示
 - **デバイス状態の確認**: デバイスのバッテリー、WiFi 信号、現在の表示内容のリアルタイム情報を取得
 - **デバイスの管理**: デバイスの一覧表示、デバイス ID の取得、コンテンツの切り替え
 
@@ -58,6 +58,7 @@ ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
 | `/api/authV2/open/device/:deviceId/next`           | POST     | 次のコンテンツに切り替え   |
 | `/api/authV2/open/device/:deviceId/text`           | POST     | テキストコンテンツを表示   |
 | `/api/authV2/open/device/:deviceId/image`          | POST     | 画像コンテンツを表示       |
+| `/api/authV2/open/device/:deviceId/canvas`         | POST     | Canvas コンテンツを表示    |
 | `/api/authV2/open/device/:deviceId/:taskType/list` | GET      | デバイスタスクを一覧表示   |
 
 ## ヘルパースクリプト
@@ -66,8 +67,11 @@ ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
 
 - `send_text.py`: デバイスにテキストを送信
 - `send_image.py`: デバイスに画像を送信
+- `send_canvas.py`: Canvas API の JSON レイアウトをデバイスに送信
 - `get_device_status.py`: 現在のデバイス状態を取得
 - `list_devices.py`: すべてのデバイスを一覧表示
+- `list_tasks.py`: デバイスのループまたは固定タスクを一覧表示
+- `switch_next.py`: 次のコンテンツに切り替え
 
 ## リソース
 

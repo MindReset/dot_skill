@@ -10,7 +10,7 @@ A skill for AI agents to interact with Dot. devices through the OpenAPI.
 
 Dot Skill allows you to:
 
-- **Control device content**: Display text, images, and other content on your Dot. devices
+- **Control device content**: Display text, images, Canvas API layouts, and other content on your Dot. devices
 - **Query device status**: Get real-time information about device battery, WiFi signal, and current display
 - **Manage devices**: List your devices, get device IDs, and switch between content
 
@@ -58,6 +58,7 @@ Restart your agent after installation.
 | `/api/authV2/open/device/:deviceId/next`           | POST   | Switch to next content |
 | `/api/authV2/open/device/:deviceId/text`           | POST   | Display text content   |
 | `/api/authV2/open/device/:deviceId/image`          | POST   | Display image content  |
+| `/api/authV2/open/device/:deviceId/canvas`         | POST   | Display canvas content |
 | `/api/authV2/open/device/:deviceId/:taskType/list` | GET    | List device tasks      |
 
 ## Helper Scripts
@@ -66,14 +67,16 @@ The `scripts/` directory contains Python helper scripts:
 
 - `send_text.py`: Send text to a device
 - `send_image.py`: Send an image to a device
+- `send_canvas.py`: Send a Canvas API JSON layout to a device
 - `get_device_status.py`: Get current device status
 - `list_devices.py`: List all your devices
+- `list_tasks.py`: List device loop or fixed tasks
+- `switch_next.py`: Switch to the next content
 
 ## Resources
 
-- [API Reference](docs/api_reference.md) - Complete API documentation
-- [Authentication](docs/authentication.md) - How to authenticate requests
-- [Error Handling](docs/error_handling.md) - Common errors and solutions
+- [API Reference](skills/dot-openapi/references/api_reference.md) - Complete API documentation
+- [Authentication](skills/dot-openapi/references/authentication.md) - How to authenticate requests
 
 ## License
 

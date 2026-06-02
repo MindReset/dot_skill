@@ -1,11 +1,12 @@
 name: dot-skill
 description: |
   Dot Skill - Interact with Dot. devices through the OpenAPI. 
-  Control text/image display, query device status, and manage devices.
+  Control text/image/canvas display, query device status, and manage devices.
 
   Key capabilities:
   - Display text content on devices
   - Display image content on devices  
+  - Display Canvas API layouts using a React object-like JSON structure with Tailwind-like classes
   - Get device status and information
   - List all devices
   - Switch to next content
@@ -16,10 +17,11 @@ instructions: |
 
   1. First obtain API key (ask user or from DOT_API_KEY env var)
   2. Obtain device ID from user
-  3. For Text API or Image API writes, ensure the matching content has already been added to the device loop task in Dot. App Content Studio
+  3. For Text API, Image API, or Canvas API writes, ensure the matching content has already been added to the device loop task in Dot. App Content Studio
   4. Use appropriate endpoint for the task:
      - POST /api/authV2/open/device/:deviceId/text - Display text
      - POST /api/authV2/open/device/:deviceId/image - Display image
+     - POST /api/authV2/open/device/:deviceId/canvas - Display a custom Canvas API layout
      - GET /api/authV2/open/device/:deviceId/status - Get status
      - GET /api/authV2/open/devices - List devices
      - POST /api/authV2/open/device/:deviceId/next - Next content
@@ -30,6 +32,31 @@ instructions: |
 
   For text API, parameters include: refreshNow, title, message (supports \n and \t), signature, icon (base64 PNG or full http(s) image URL), link, taskKey, styles.title/signature with fontFamily/fontSize/fontWeight, and styles.message with fontFamily/fontSize/fontWeight/lineHeight
   For image API, parameters include: refreshNow, image (base64 PNG or full http(s) image URL), link, border (0/1), ditherType, ditherKernel, taskKey
+  For Canvas API, parameters include: refreshNow, taskKey, data, windowData, layoutFull, link, border. Use Canvas API when the user wants a custom card, dashboard, status panel, or layout that is more expressive than Text API but should not require a locally pre-rendered image like Image API.
+
+  Canvas API model:
+  - Build windowData as JSON, not JSX, JavaScript, HTML, CSS, or an image.
+  - windowData.default must be an array of React object-like elements.
+  - Each element must look like {"type":"div","props":{...}}.
+  - Allowed element types are only div, span, and img.
+  - props.tw may contain Tailwind-like utility classes.
+  - props.style may contain inline style values, but only strings or numbers.
+  - props.children may be a string, one element object, or an array of element objects.
+  - Dynamic values may only use simple get expressions such as {{get inputData "title" default="-"}}.
+  - Do all computation, filtering, formatting, truncation, and unit conversion before sending JSON.
+  - Do not generate arbitrary JSX, HTML, CSS, scripts, custom components, browser APIs, loops, conditions, or unsupported template helpers.
+
+  Canvas API boundaries:
+  - data JSON size <= 64 KB.
+  - windowData JSON size <= 128 KB.
+  - layoutFull JSON size <= 8 KB.
+  - element count <= 80.
+  - nesting depth <= 16.
+  - string length inside windowData <= 4000 characters.
+  - disallowed prop keys: dangerouslySetInnerHTML, ref, srcSet.
+  - disallowed unsafe keys: __proto__, constructor, prototype.
+  - reserved top-level data keys: type, key, windowData, layoutFull, link, border, __proto__, constructor, prototype.
+  - For reliable rendering, prefer bounded flex layouts, explicit colors, fixed heights where needed, overflow-hidden, lineClamp, textOverflow, min-w-0, and min-h-0.
 
 tools:
 - type: http
@@ -53,6 +80,9 @@ tools:
   - path: /api/authV2/open/device/{deviceId}/image
     method: POST
     description: Display image content
+  - path: /api/authV2/open/device/{deviceId}/canvas
+    method: POST
+    description: Display a custom Canvas API layout
   - path: /api/authV2/open/device/{deviceId}/{taskType}/list
     method: GET
     description: List device tasks

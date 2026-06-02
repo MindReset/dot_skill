@@ -277,6 +277,163 @@ curl -X POST \
 
 ---
 
+## Display Canvas
+
+Display a custom Canvas API layout on the device.
+
+```http
+POST /api/authV2/open/device/:deviceId/canvas
+```
+
+> Before calling this endpoint, make sure the device already has a Canvas API content item in its loop task in Dot. App Content Studio.
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `deviceId` | string | Yes | Device serial number |
+
+### Body Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `refreshNow` | boolean | No | `true` | Display immediately or queue |
+| `taskKey` | string | No | - | Task identifier for multiple canvas APIs |
+| `data` | object | No | `{}` | Plain JSON values that the layout reads at render time |
+| `windowData` | object | Yes | - | React object-like render tree with a `default` layer array |
+| `layoutFull` | object | No | - | FULL layout override with optional `tw` and `style` |
+| `link` | string | No | - | Tap-to-open link |
+| `border` | number | No | `0` | Screen border color: 0=white, 1=black |
+
+Canvas API is the preferred endpoint for custom cards, dashboards, status panels, and other layouts that need more structure than Text API but should not require pre-rendering a complete image locally like Image API.
+
+Canvas API requests combine content values with an object-like React render tree. Use `data` for values the screen can read, `windowData` for the element tree, `layoutFull` for FULL layout overrides, `link` for tap-to-open behavior, and `border` for the screen border color.
+
+### Canvas Composition Model
+
+Build `windowData` as JSON, not JSX, JavaScript, HTML, CSS, or an image. The root must be:
+
+```json
+{
+  "default": [
+    {
+      "type": "div",
+      "props": {
+        "tw": "flex flex-col flex-1 bg-white text-black",
+        "children": "Hello Dot."
+      }
+    }
+  ]
+}
+```
+
+Use this shape for every element:
+
+| Field | Allowed Value |
+|-------|---------------|
+| `type` | `div`, `span`, or `img` |
+| `props` | Object containing render props |
+| `props.tw` | Tailwind-like utility classes |
+| `props.style` | Inline style object with string or number values |
+| `props.children` | String, one element object, or an array of element objects |
+
+For dynamic values, only read from `data` using simple `get` expressions such as `{{get inputData "title" default="-"}}`. Do all computation, filtering, number formatting, date formatting, unit conversion, and string truncation before sending the JSON payload. Do not use arbitrary helpers, JavaScript expressions, function calls, loops, conditions, imports, scripts, CSS files, media queries, browser APIs, or JSX.
+
+Images may use a data URI or an anonymously accessible `http(s)` image URL. Prefer small, stable images. Avoid private network URLs, authenticated URLs, or URLs that require a special Referer.
+
+The outermost Canvas element should usually avoid extra padding because the device layout handles spacing. Use `layoutFull.tw` or `layoutFull.style` for full-bleed rendering, custom background, or padding overrides.
+
+### Canvas Boundaries
+
+Stay inside these server-side validation boundaries:
+
+| Boundary | Limit |
+|----------|-------|
+| `data` JSON size | 64 KB |
+| `windowData` JSON size | 128 KB |
+| `layoutFull` JSON size | 8 KB |
+| Element count | 80 |
+| Nesting depth | 16 |
+| String length inside `windowData` | 4000 characters |
+
+Additional constraints:
+
+- `windowData.default` must be an array.
+- Allowed element types are only `div`, `span`, and `img`.
+- Disallowed prop keys: `dangerouslySetInnerHTML`, `ref`, `srcSet`.
+- Disallowed unsafe keys anywhere relevant: `__proto__`, `constructor`, `prototype`.
+- Reserved top-level keys inside `data`: `type`, `key`, `windowData`, `layoutFull`, `link`, `border`, `__proto__`, `constructor`, `prototype`.
+
+Layout guidance for reliable rendering:
+
+- Prefer one bounded root container with `flex`, `w-full`, `h-full`, and explicit background/text colors.
+- Use `min-w-0`, `min-h-0`, fixed heights, `overflow-hidden`, `lineClamp`, `textOverflow`, and `whiteSpace` when text could overflow.
+- Keep Tailwind-like classes conservative and concrete. Prefer known layout, spacing, color, border, font, and size utilities over experimental or browser-only CSS.
+- For complex dashboards, compose small sections and cards instead of deeply nested decorative structures.
+- If a layout becomes too complex for the validation limits, simplify the JSON rather than trying to bypass the limits.
+
+### Example Request
+
+```bash
+curl -X POST \
+  https://dot.mindreset.tech/api/authV2/open/device/ABCD1234ABCD/canvas \
+  -H 'Authorization: Bearer dot_app_<your_key>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "data": {
+      "title": "Canvas API",
+      "message": "Hello Dot."
+    },
+    "windowData": {
+      "default": [
+        {
+          "type": "div",
+          "props": {
+            "tw": "flex flex-col flex-1 bg-white text-black gap-[8px]",
+            "children": [
+              {
+                "type": "div",
+                "props": {
+                  "tw": "text-28-chillduansans font-bold",
+                  "children": "{{get inputData \"title\"}}"
+                }
+              },
+              {
+                "type": "div",
+                "props": {
+                  "tw": "text-18-chillduansans",
+                  "children": "{{get inputData \"message\"}}"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "layoutFull": {
+      "tw": "p-0 bg-white",
+      "style": {
+        "padding": 0
+      }
+    },
+    "border": 0
+  }'
+```
+
+### Response
+
+```json
+{
+  "code": 200,
+  "message": "Device Canvas API content switched.",
+  "result": {
+    "message": "Device ABCD1234ABCD Canvas API content switched."
+  }
+}
+```
+
+---
+
 ## List Device Tasks
 
 Get a list of tasks/content for a specific device.
@@ -310,13 +467,19 @@ GET /api/authV2/open/device/:deviceId/:taskType/list
     "border": 0,
     "ditherType": "DIFFUSION",
     "ditherKernel": "FLOYD_STEINBERG"
+  },
+  {
+    "type": "CANVAS_API",
+    "key": "canvas_task_1",
+    "border": 0,
+    "link": "https://dot.mindreset.tech"
   }
 ]
 ```
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `type` | string | Content type: `TEXT_API`, `IMAGE_API`, or `GENERAL` |
+| `type` | string | Content type: `TEXT_API`, `IMAGE_API`, `CANVAS_API`, or `GENERAL` |
 | `key` | string \| null | Task unique identifier (use as `taskKey` parameter) |
 
 ---

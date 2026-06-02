@@ -10,7 +10,7 @@
 
 Dot Skill 允许您：
 
-- **控制设备内容**：在 Dot. 设备上显示文本、图像等内容
+- **控制设备内容**：在 Dot. 设备上显示文本、图像、画板 API 布局等内容
 - **查询设备状态**：获取设备电池、WiFi 信号和当前显示内容的实时信息
 - **管理设备**：列出您的设备、获取设备 ID、切换内容
 
@@ -58,6 +58,7 @@ ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
 | `/api/authV2/open/device/:deviceId/next`           | POST | 切换到下一个内容 |
 | `/api/authV2/open/device/:deviceId/text`           | POST | 显示文本内容     |
 | `/api/authV2/open/device/:deviceId/image`          | POST | 显示图像内容     |
+| `/api/authV2/open/device/:deviceId/canvas`         | POST | 显示画板内容     |
 | `/api/authV2/open/device/:deviceId/:taskType/list` | GET  | 列出设备任务     |
 
 ## 辅助脚本
@@ -66,14 +67,16 @@ ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
 
 - `send_text.py`：向设备发送文本
 - `send_image.py`：向设备发送图像
+- `send_canvas.py`：向设备发送画板 API JSON 布局
 - `get_device_status.py`：获取当前设备状态
 - `list_devices.py`：列出所有设备
+- `list_tasks.py`：列出设备循环或固定任务
+- `switch_next.py`：切换到下一个内容
 
 ## 资源
 
-- [API 参考](docs/api_reference.md) - 完整的 API 文档
-- [认证指南](docs/authentication.md) - 如何认证请求
-- [错误处理](docs/error_handling.md) - 常见错误和解决方案
+- [API 参考](skills/dot-openapi/references/api_reference.md) - 完整的 API 文档
+- [认证指南](skills/dot-openapi/references/authentication.md) - 如何认证请求
 
 ## 许可证
 
