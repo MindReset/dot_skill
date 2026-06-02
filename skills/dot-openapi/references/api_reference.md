@@ -311,7 +311,7 @@ Canvas API requests combine content values with an object-like React render tree
 
 ### Canvas Composition Model
 
-Build `windowData` as JSON, not JSX, JavaScript, HTML, CSS, or an image. The root must be:
+Build `windowData` as JSON, not JSX, JavaScript, raw HTML, external CSS, or an image. CSS-like styling belongs in `props.style` or `props.tw`. The root must be:
 
 ```json
 {
@@ -371,6 +371,43 @@ Layout guidance for reliable rendering:
 - Keep Tailwind-like classes conservative and concrete. Prefer known layout, spacing, color, border, font, and size utilities over experimental or browser-only CSS.
 - For complex dashboards, compose small sections and cards instead of deeply nested decorative structures.
 - If a layout becomes too complex for the validation limits, simplify the JSON rather than trying to bypass the limits.
+
+### Supported Styles And Custom Tailwind Classes
+
+Canvas API supports a device-oriented static rendering style surface. The styling boundary is React object-like elements plus a static CSS subset, with Dot.'s custom Tailwind font utilities, breakpoint handling, and image-processing classes.
+
+Use the right layer:
+
+| Syntax | Source | Notes |
+|--------|--------|-------|
+| `props.style` | Dot Canvas static style subset | Best for deterministic pixel values and explicit styles |
+| `props.tw` | Tailwind-like syntax + Dot. extensions | Best for quick layout, color, spacing, font classes, and image-processing classes |
+| `layoutFull.tw` / `layoutFull.style` | Dot. layout wrapper override | Use for full-bleed screens, background, and padding overrides |
+
+The `props.style` support list is aligned with the static CSS support table. Dot Canvas style categories include CSS variables, `display`, `position`, `color`, `margin`, `padding`, `top/right/bottom/left`, `width/height`, `minWidth/minHeight/maxWidth/maxHeight`, `border*`, `borderRadius*`, Flexbox, `gap`, `fontFamily`, `fontSize`, `fontWeight`, `fontStyle`, `tabSize`, `textAlign`, `textIndent`, `textTransform`, `textOverflow`, `textDecoration`, `textShadow`, `letterSpacing`, `lineHeight`, `whiteSpace`, `lineClamp`, `wordBreak`, `textWrap`, `backgroundColor`, `backgroundImage`, `backgroundPosition`, `backgroundSize`, `backgroundClip`, `backgroundRepeat`, `transform`, `transformOrigin`, `objectFit`, `objectPosition`, `opacity`, `boxSizing`, `boxShadow`, `overflow`, `filter`, `clipPath`, `mask*`, and `WebkitTextStroke*`.
+
+This style list only describes `props.style`. Font utilities, breakpoint processing, and `img-*` image-processing classes are Dot. custom Tailwind extensions on top of `props.tw`.
+
+Canvas API is not a full browser environment. Do not use `<style>`, external `<link>`, `<script>`, 3D transforms, `z-index`, or `calc()`. `currentColor` is only reliable on the `color` property. Advanced typography and RTL languages are not current stable targets. Canvas API also must not generate JSX, arbitrary JS expressions, React hooks, browser APIs, external CSS, or custom components.
+
+Common `props.tw` classes include `flex`, `flex-row`, `flex-col`, `flex-1`, `shrink-0`, `grow`, `items-*`, `justify-*`, `w-full`, `h-full`, `w-[84px]`, `h-[40px]`, `min-w-0`, `min-h-0`, `max-h-[200px]`, `gap-*`, `gap-[5px]`, `p-*`, `px-[8px]`, `py-[5px]`, `bg-*`, `text-*`, `border*`, `rounded*`, `overflow-hidden`, `box-border`, `box-content`, `fill-black`, and `fill-white`. If a Tailwind class is uncertain, prefer `props.style`.
+
+Font class formats:
+
+- Regular fonts: `text-{size}-{font}`, for example `text-18-chillduansans`
+- Regular fonts with px size: `text-[Npx]-{font}`, for example `text-[20px]-playfairdisplay`
+- Tailwind size keys: `text-{xs/sm/base/lg/xl/2xl...}-{font}`, for example `text-lg-chillduansans`
+- Pixel fonts: `text-pixel-{size}[-variant]`, for example `text-pixel-12-zpix`
+
+Common regular font keys: `chillduansans`, `chillksans`, `chillorganic`, `chillroundf`, `chillroundgothic`, `logoscunboundedsans`, `maokenyingbikaishuj0.09`, `playfairdisplay`, `zihunzhoukesong`.
+
+Pixel font classes: `text-pixel-8`, `text-pixel-8-quan`, `text-pixel-10`, `text-pixel-12`, `text-pixel-12-xiaoya`, `text-pixel-12-zpix`, `text-pixel-16`, `text-pixel-16-cusong`, `text-pixel-16-unifont`, `text-pixel-16-unifontmono`, `text-pixel-24`.
+
+Image elements support e-ink image-processing classes in `img.props.tw`:
+
+- Dither: `img-dither-none`, `img-dither-diffusion`, `img-dither-ordered`
+- Kernel: `img-kernel-threshold`, `img-kernel-atkinson`, `img-kernel-burkes`, `img-kernel-floyd-steinberg`, `img-kernel-sierra2`, `img-kernel-stucki`, `img-kernel-jarvis-judice-ninke`, `img-kernel-diffusion-row`, `img-kernel-diffusion-column`, `img-kernel-diffusion-2d`
+- Color levels: `img-levels-2`, `img-levels-3`, `img-levels-4`, `img-levels-8`, `img-levels-16`
 
 ### Example Request
 

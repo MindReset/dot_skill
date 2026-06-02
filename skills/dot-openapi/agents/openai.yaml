@@ -35,7 +35,8 @@ instructions: |
   For Canvas API, parameters include: refreshNow, taskKey, data, windowData, layoutFull, link, border. Use Canvas API when the user wants a custom card, dashboard, status panel, or layout that is more expressive than Text API but should not require a locally pre-rendered image like Image API.
 
   Canvas API model:
-  - Build windowData as JSON, not JSX, JavaScript, HTML, CSS, or an image.
+  - Build windowData as JSON, not JSX, JavaScript, raw HTML, external CSS, or an image.
+  - CSS-like styling belongs in props.style or props.tw.
   - windowData.default must be an array of React object-like elements.
   - Each element must look like {"type":"div","props":{...}}.
   - Allowed element types are only div, span, and img.
@@ -44,7 +45,19 @@ instructions: |
   - props.children may be a string, one element object, or an array of element objects.
   - Dynamic values may only use simple get expressions such as {{get inputData "title" default="-"}}.
   - Do all computation, filtering, formatting, truncation, and unit conversion before sending JSON.
-  - Do not generate arbitrary JSX, HTML, CSS, scripts, custom components, browser APIs, loops, conditions, or unsupported template helpers.
+  - Do not generate arbitrary JSX, raw HTML, external CSS, scripts, custom components, browser APIs, loops, conditions, or unsupported template helpers.
+
+  Canvas API style surface:
+  - props.style supports the Dot Canvas static style subset.
+  - props.tw supports Tailwind-like syntax plus Dot extensions.
+  - layoutFull.tw and layoutFull.style override the Dot layout wrapper for full-bleed screens, background, and padding.
+  - The props.style support list is aligned with the static CSS support table. Dot Canvas style categories include CSS variables, display, position, color, margin, padding, top/right/bottom/left, width/height, min/max size, border, borderRadius, Flexbox, gap, fontFamily, fontSize, fontWeight, fontStyle, tabSize, textAlign, textIndent, textTransform, textOverflow, textDecoration, textShadow, letterSpacing, lineHeight, whiteSpace, lineClamp, wordBreak, textWrap, backgroundColor, backgroundImage, backgroundPosition, backgroundSize, backgroundClip, backgroundRepeat, transform, transformOrigin, objectFit, objectPosition, opacity, boxSizing, boxShadow, overflow, filter, clipPath, mask, and WebkitTextStroke.
+  - Font utilities, breakpoint processing, and img-* image-processing classes are Dot custom Tailwind extensions on top of props.tw.
+  - Canvas API is not a full browser environment: do not use style tags, external link tags, script tags, 3D transforms, z-index, calc(), arbitrary JS expressions, React hooks, browser APIs, external stylesheets, or custom components.
+  - Common tw classes include flex, flex-row, flex-col, flex-1, shrink-0, grow, items-*, justify-*, w-full, h-full, w-[84px], h-[40px], min-w-0, min-h-0, max-h-[200px], gap-*, gap-[5px], p-*, px-[8px], py-[5px], bg-*, text-*, border*, rounded*, overflow-hidden, box-border, box-content, fill-black, and fill-white.
+  - If a Tailwind-like class is uncertain, prefer props.style.
+  - Font classes include regular fonts like text-18-chillduansans, text-[20px]-playfairdisplay, text-lg-chillduansans, and pixel fonts like text-pixel-12-zpix.
+  - Image-processing classes on img.props.tw include img-dither-none/diffusion/ordered, img-kernel-threshold/atkinson/burkes/floyd-steinberg/sierra2/stucki/jarvis-judice-ninke/diffusion-row/diffusion-column/diffusion-2d, and img-levels-2/3/4/8/16.
 
   Canvas API boundaries:
   - data JSON size <= 64 KB.
