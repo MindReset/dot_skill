@@ -118,11 +118,7 @@ POST /api/authV2/open/device/:deviceId/next
 
 ```json
 {
-  "code": 200,
-  "message": "设备 ABCD1234ABCD 已成功切换到下一个内容",
-  "result": {
-    "message": "设备 ABCD1234ABCD 已成功切换到下一个内容"
-  }
+  "message": "Device ABCD1234ABCD content switched."
 }
 ```
 
@@ -150,6 +146,7 @@ POST /api/authV2/open/device/:deviceId/text
 |-----------|------|----------|---------|-------------|
 | `refreshNow` | boolean | No | `true` | Display immediately or queue |
 | `taskKey` | string | No | - | Task identifier for multiple text APIs |
+| `taskAlias` | string \| number | No | - | Human-readable task name shown in the device task list. Max 100 characters |
 | `title` | string | No | - | Title text |
 | `message` | string | No | - | Main content text. Supports `\n` and `\t` |
 | `signature` | string | No | - | Signature/footer text |
@@ -182,6 +179,7 @@ curl -X POST \
   -H 'Authorization: Bearer dot_app_<your_key>' \
   -H 'Content-Type: application/json' \
   -d '{
+    "taskAlias": "验证码",
     "title": "验证码小助手",
     "message": "一个来自「少数派」的验证码\n205112",
     "signature": "2025年8月4日 19:58",
@@ -197,11 +195,7 @@ curl -X POST \
 
 ```json
 {
-  "code": 200,
-  "message": "设备文本 API 内容已切换",
-  "result": {
-    "message": "设备 ABCD1234ABCD 文本 API 内容已切换"
-  }
+  "message": "Device ABCD1234ABCD text API content switched."
 }
 ```
 
@@ -229,6 +223,7 @@ POST /api/authV2/open/device/:deviceId/image
 |-----------|------|----------|---------|-------------|
 | `refreshNow` | boolean | No | `true` | Display immediately or queue |
 | `taskKey` | string | No | - | Task identifier for multiple image APIs |
+| `taskAlias` | string \| number | No | - | Human-readable task name shown in the device task list. Max 100 characters |
 | `image` | string | Yes | - | Base64 encoded PNG image data or full http(s) image URL |
 | `link` | string | No | - | Tap-to-open link |
 | `border` | number | No | `0` | Screen border color: 0=white, 1=black |
@@ -256,6 +251,7 @@ curl -X POST \
   -H 'Authorization: Bearer dot_app_<your_key>' \
   -H 'Content-Type: application/json' \
   -d '{
+    "taskAlias": "Photo",
     "image": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
     "border": 0,
     "ditherType": "DIFFUSION",
@@ -267,11 +263,7 @@ curl -X POST \
 
 ```json
 {
-  "code": 200,
-  "message": "设备图像 API 内容已切换",
-  "result": {
-    "message": "设备 ABCD1234ABCD 图像 API 内容已切换"
-  }
+  "message": "Device ABCD1234ABCD Image API content switched."
 }
 ```
 
@@ -299,6 +291,7 @@ POST /api/authV2/open/device/:deviceId/canvas
 |-----------|------|----------|---------|-------------|
 | `refreshNow` | boolean | No | `true` | Display immediately or queue |
 | `taskKey` | string | No | - | Task identifier for multiple canvas APIs |
+| `taskAlias` | string \| number | No | - | Human-readable task name shown in the device task list. Max 100 characters |
 | `data` | object | No | `{}` | Plain JSON values that the layout reads at render time |
 | `windowData` | object | Yes | - | React object-like render tree with a `default` layer array |
 | `layoutFull` | object | No | - | FULL layout override with optional `tw` and `style` |
@@ -307,7 +300,9 @@ POST /api/authV2/open/device/:deviceId/canvas
 
 Canvas API is the preferred endpoint for custom cards, dashboards, status panels, and other layouts that need more structure than Text API but should not require pre-rendering a complete image locally like Image API.
 
-Canvas API requests combine content values with an object-like React render tree. Use `data` for values the screen can read, `windowData` for the element tree, `layoutFull` for FULL layout overrides, `link` for tap-to-open behavior, and `border` for the screen border color.
+Canvas API requests combine content values with an object-like React render tree. Use `data` for values the screen can read, `windowData` for the element tree, `layoutFull` for FULL layout overrides, `taskAlias` for the task-list name, `link` for tap-to-open behavior, and `border` for the screen border color.
+
+For Text API, Image API, and Canvas API, use top-level `taskAlias` when the content should have a human-readable name in the device task list. Omit `taskAlias` to keep the existing task name. Send `taskAlias: ""` or `taskAlias: null` only when intentionally clearing the task name.
 
 ### Canvas Composition Model
 
@@ -362,7 +357,7 @@ Additional constraints:
 - Allowed element types are only `div`, `span`, and `img`.
 - Disallowed prop keys: `dangerouslySetInnerHTML`, `ref`, `srcSet`.
 - Disallowed unsafe keys anywhere relevant: `__proto__`, `constructor`, `prototype`.
-- Reserved top-level keys inside `data`: `type`, `key`, `windowData`, `layoutFull`, `link`, `border`, `__proto__`, `constructor`, `prototype`.
+- Reserved top-level keys inside `data`: `type`, `key`, `windowData`, `layoutFull`, `taskAlias`, `link`, `border`, `__proto__`, `constructor`, `prototype`.
 
 Layout guidance for reliable rendering:
 
@@ -417,6 +412,7 @@ curl -X POST \
   -H 'Authorization: Bearer dot_app_<your_key>' \
   -H 'Content-Type: application/json' \
   -d '{
+    "taskAlias": "Canvas Demo",
     "data": {
       "title": "Canvas API",
       "message": "Hello Dot."
@@ -461,11 +457,7 @@ curl -X POST \
 
 ```json
 {
-  "code": 200,
-  "message": "Device Canvas API content switched.",
-  "result": {
-    "message": "Device ABCD1234ABCD Canvas API content switched."
-  }
+  "message": "Device ABCD1234ABCD Canvas API content switched."
 }
 ```
 

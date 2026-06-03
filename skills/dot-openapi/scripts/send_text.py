@@ -5,6 +5,7 @@ Send text content to a Dot. device.
 Usage:
     python send_text.py --device-id ABCD1234ABCD --title "Hello" --message "World"
     python send_text.py --device-id ABCD1234ABCD --message "Test message" --refresh-now
+    python send_text.py --device-id ABCD1234ABCD --message "Standup at 10" --task-alias "Meeting Reminder"
 
 Environment Variables:
     DOT_API_KEY: Your Dot. API key (required)
@@ -31,8 +32,9 @@ def get_api_key():
     return api_key
 
 
-def send_text(device_id, title=None, message=None, signature=None, 
-              icon=None, link=None, refresh_now=True, task_key=None):
+def send_text(device_id, title=None, message=None, signature=None,
+              icon=None, link=None, refresh_now=True, task_key=None,
+              task_alias=None):
     """Send text content to a device."""
     api_key = get_api_key()
     
@@ -54,6 +56,8 @@ def send_text(device_id, title=None, message=None, signature=None,
         data["link"] = link
     if task_key is not None:
         data["taskKey"] = task_key
+    if task_alias is not None:
+        data["taskAlias"] = task_alias
     
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -126,6 +130,10 @@ def main():
         "--task-key",
         help="Task identifier for multiple text APIs"
     )
+    parser.add_argument(
+        "--task-alias",
+        help="Human-readable task name shown in the device task list"
+    )
     
     args = parser.parse_args()
     
@@ -144,7 +152,8 @@ def main():
         icon=icon_data,
         link=args.link,
         refresh_now=args.refresh_now,
-        task_key=args.task_key
+        task_key=args.task_key,
+        task_alias=args.task_alias
     )
 
 

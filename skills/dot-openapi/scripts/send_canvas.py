@@ -5,6 +5,7 @@ Send Canvas API content to a Dot. device.
 Usage:
     python send_canvas.py --device-id ABCD1234ABCD --payload canvas_payload.json
     python send_canvas.py --device-id ABCD1234ABCD --data data.json --window-data window_data.json
+    python send_canvas.py --device-id ABCD1234ABCD --payload canvas_payload.json --task-alias "Morning Dashboard"
     python send_canvas.py --device-id ABCD1234ABCD --payload canvas_payload.json --dry-run
 
 Environment Variables:
@@ -37,6 +38,7 @@ RESERVED_DATA_KEYS = {
     "key",
     "windowData",
     "layoutFull",
+    "taskAlias",
     "link",
     "border",
     "__proto__",
@@ -266,6 +268,8 @@ def build_payload(args):
         payload["border"] = args.border
     if args.task_key is not None:
         payload["taskKey"] = args.task_key
+    if args.task_alias is not None:
+        payload["taskAlias"] = args.task_alias
     if args.refresh_now is None:
         payload.setdefault("refreshNow", True)
     else:
@@ -357,6 +361,10 @@ def main():
     parser.add_argument(
         "--task-key",
         help="Task identifier for multiple Canvas API contents",
+    )
+    parser.add_argument(
+        "--task-alias",
+        help="Human-readable task name shown in the device task list",
     )
     parser.add_argument(
         "--dry-run",

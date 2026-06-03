@@ -24,6 +24,8 @@ Authorization: Bearer dot_app_<your_api_key>
 
 Rate Limit: 10 requests per second
 
+Response shape: use the HTTP status code as the request result. Successful POST control endpoints (`next`, `text`, `image`, `canvas`) return a JSON object with a top-level `message` field only. Do not expect the legacy `{ code, message, result }` wrapper.
+
 ## API Endpoints
 
 ### Device Management
@@ -75,6 +77,7 @@ Rate Limit: 10 requests per second
 | ------------ | ------- | -------- | ---------------------------------------------- |
 | `refreshNow` | boolean | No       | Whether to display immediately (default: true) |
 | `taskKey`    | string  | No       | Task identifier for multiple text APIs         |
+| `taskAlias`  | string \| number | No | Human-readable task name shown in the device task list |
 | `title`      | string  | No       | Title text                                     |
 | `message`    | string  | No       | Main content text. Supports `\n` and `\t`      |
 | `signature`  | string  | No       | Signature/footer text                          |
@@ -94,6 +97,7 @@ Supported `fontFamily` values: `ChillDuanSans`, `ChillKSans`, `ChillKSanslatin`,
 | -------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `refreshNow`   | boolean | No       | Whether to display immediately (default: true)                                                                                                                                 |
 | `taskKey`      | string  | No       | Task identifier for multiple image APIs                                                                                                                                        |
+| `taskAlias`    | string \| number | No | Human-readable task name shown in the device task list                                                                                                                         |
 | `image`        | string  | Yes      | Base64 encoded PNG image data or full http(s) image URL                                                                                                                        |
 | `link`         | string  | No       | Tap-to-open link                                                                                                                                                               |
 | `border`       | number  | No       | Screen border color: 0=white, 1=black (default: 0)                                                                                                                             |
@@ -106,6 +110,7 @@ Supported `fontFamily` values: `ChillDuanSans`, `ChillKSans`, `ChillKSanslatin`,
 | ------------ | ------- | -------- | ---------------------------------------------- |
 | `refreshNow` | boolean | No       | Whether to display immediately (default: true) |
 | `taskKey`    | string  | No       | Task identifier for multiple canvas APIs       |
+| `taskAlias`  | string \| number | No | Human-readable task name shown in the device task list |
 | `data`       | object  | No       | Plain JSON values that the layout reads at render time |
 | `windowData` | object  | Yes      | React object-like render tree with a `default` layer array |
 | `layoutFull` | object  | No       | FULL layout override with optional `tw` and `style` |
@@ -114,7 +119,9 @@ Supported `fontFamily` values: `ChillDuanSans`, `ChillKSans`, `ChillKSanslatin`,
 
 Canvas API is the preferred API when the user wants a custom card, dashboard, status panel, or any layout that is more expressive than the fixed Text API fields but should not require pre-rendering a full image locally like Image API.
 
-Canvas API requests combine content values with an object-like React render tree. Use `data` for values the screen can read, `windowData` for the element tree, `layoutFull` for FULL layout overrides, `link` for tap-to-open behavior, and `border` for the screen border color.
+Canvas API requests combine content values with an object-like React render tree. Use `data` for values the screen can read, `windowData` for the element tree, `layoutFull` for FULL layout overrides, `taskAlias` for the task-list name, `link` for tap-to-open behavior, and `border` for the screen border color.
+
+For Text API, Image API, and Canvas API, use top-level `taskAlias` when the user wants to name or rename the content in the device task list. Omit `taskAlias` to keep the existing task name. Send `taskAlias: ""` or `taskAlias: null` only when the user explicitly wants to clear the task name. `taskAlias` accepts string or number values up to 100 characters.
 
 ### Canvas Composition Model
 
@@ -162,7 +169,7 @@ Stay inside these server-side validation boundaries:
 - Maximum string length inside `windowData`: 4000 characters.
 - Disallowed prop keys: `dangerouslySetInnerHTML`, `ref`, `srcSet`.
 - Disallowed unsafe keys anywhere relevant: `__proto__`, `constructor`, `prototype`.
-- Reserved top-level keys inside `data`: `type`, `key`, `windowData`, `layoutFull`, `link`, `border`, `__proto__`, `constructor`, `prototype`.
+- Reserved top-level keys inside `data`: `type`, `key`, `windowData`, `layoutFull`, `taskAlias`, `link`, `border`, `__proto__`, `constructor`, `prototype`.
 
 Layout guidance for reliable rendering:
 
@@ -219,6 +226,7 @@ Do not rely on `aspect-ratio`, CSS Grid, pseudo classes, media queries, external
 - For text `icon` and image `image`, the HTTP API accepts either PNG base64 data or a full http(s) image URL
 - For Canvas API, generate a JSON object-like React structure with Tailwind-like classes; keep it inside the documented boundaries
 - Use `taskKey` when device has multiple text/image/canvas API content to specify target
+- Use top-level `taskAlias` when the user wants a human-readable name for text/image/canvas API content; do not put `taskAlias` inside Canvas `data`
 
 ## Constraints
 

@@ -11,6 +11,7 @@ A skill for AI agents to interact with Dot. devices through the OpenAPI.
 Dot Skill allows you to:
 
 - **Control device content**: Display text, images, Canvas API layouts, and other content on your Dot. devices
+- **Name API content**: Set a task alias for text, image, and Canvas API items so they are easy to identify
 - **Query device status**: Get real-time information about device battery, WiFi signal, and current display
 - **Manage devices**: List your devices, get device IDs, and switch between content
 
@@ -72,6 +73,8 @@ The `scripts/` directory contains Python helper scripts:
 - `list_devices.py`: List all your devices
 - `list_tasks.py`: List device loop or fixed tasks
 - `switch_next.py`: Switch to the next content
+
+Text, image, and Canvas helper scripts support `--task-alias` to set the human-readable task name shown in the device task list.
 
 ## Resources
 

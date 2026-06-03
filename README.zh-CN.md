@@ -11,6 +11,7 @@
 Dot Skill 允许您：
 
 - **控制设备内容**：在 Dot. 设备上显示文本、图像、画板 API 布局等内容
+- **命名 API 内容**：为文本、图像和画板 API 内容设置任务别名，方便在任务列表中区分
 - **查询设备状态**：获取设备电池、WiFi 信号和当前显示内容的实时信息
 - **管理设备**：列出您的设备、获取设备 ID、切换内容
 
@@ -72,6 +73,8 @@ ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
 - `list_devices.py`：列出所有设备
 - `list_tasks.py`：列出设备循环或固定任务
 - `switch_next.py`：切换到下一个内容
+
+文本、图像和画板辅助脚本都支持 `--task-alias`，用于设置设备任务列表中显示的可读任务名称。
 
 ## 资源
 

@@ -30,9 +30,10 @@ instructions: |
   5. Always include: Authorization: Bearer dot_app_<api_key>
   6. Rate limit: 10 requests/second
 
-  For text API, parameters include: refreshNow, title, message (supports \n and \t), signature, icon (base64 PNG or full http(s) image URL), link, taskKey, styles.title/signature with fontFamily/fontSize/fontWeight, and styles.message with fontFamily/fontSize/fontWeight/lineHeight
-  For image API, parameters include: refreshNow, image (base64 PNG or full http(s) image URL), link, border (0/1), ditherType, ditherKernel, taskKey
-  For Canvas API, parameters include: refreshNow, taskKey, data, windowData, layoutFull, link, border. Use Canvas API when the user wants a custom card, dashboard, status panel, or layout that is more expressive than Text API but should not require a locally pre-rendered image like Image API.
+  For text API, parameters include: refreshNow, taskKey, taskAlias, title, message (supports \n and \t), signature, icon (base64 PNG or full http(s) image URL), link, styles.title/signature with fontFamily/fontSize/fontWeight, and styles.message with fontFamily/fontSize/fontWeight/lineHeight
+  For image API, parameters include: refreshNow, taskKey, taskAlias, image (base64 PNG or full http(s) image URL), link, border (0/1), ditherType, ditherKernel
+  For Canvas API, parameters include: refreshNow, taskKey, taskAlias, data, windowData, layoutFull, link, border. Use Canvas API when the user wants a custom card, dashboard, status panel, or layout that is more expressive than Text API but should not require a locally pre-rendered image like Image API.
+  For Text API, Image API, and Canvas API, use top-level taskAlias when the user wants a human-readable task-list name. Omit taskAlias to keep the existing task name. Send taskAlias as an empty string or null only when the user explicitly wants to clear the name. Never put taskAlias inside Canvas data.
 
   Canvas API model:
   - Build windowData as JSON, not JSX, JavaScript, raw HTML, external CSS, or an image.
@@ -68,7 +69,7 @@ instructions: |
   - string length inside windowData <= 4000 characters.
   - disallowed prop keys: dangerouslySetInnerHTML, ref, srcSet.
   - disallowed unsafe keys: __proto__, constructor, prototype.
-  - reserved top-level data keys: type, key, windowData, layoutFull, link, border, __proto__, constructor, prototype.
+  - reserved top-level data keys: type, key, windowData, layoutFull, taskAlias, link, border, __proto__, constructor, prototype.
   - For reliable rendering, prefer bounded flex layouts, explicit colors, fixed heights where needed, overflow-hidden, lineClamp, textOverflow, min-w-0, and min-h-0.
 
 tools:

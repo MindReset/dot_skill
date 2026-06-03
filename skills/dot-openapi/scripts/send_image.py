@@ -5,6 +5,7 @@ Send image content to a Dot. device.
 Usage:
     python send_image.py --device-id ABCD1234ABCD --image path/to/image.png
     python send_image.py --device-id ABCD1234ABCD --image path/to/image.png --border 1
+    python send_image.py --device-id ABCD1234ABCD --image path/to/image.png --task-alias "Family Photo"
 
 Environment Variables:
     DOT_API_KEY: Your Dot. API key (required)
@@ -40,7 +41,7 @@ def encode_image(image_path):
 
 def send_image(device_id, image_path, link=None, border=0, 
                dither_type="DIFFUSION", dither_kernel="FLOYD_STEINBERG",
-               refresh_now=True, task_key=None):
+               refresh_now=True, task_key=None, task_alias=None):
     """Send image content to a device."""
     api_key = get_api_key()
     
@@ -64,6 +65,8 @@ def send_image(device_id, image_path, link=None, border=0,
         data["ditherKernel"] = dither_kernel
     if task_key is not None:
         data["taskKey"] = task_key
+    if task_alias is not None:
+        data["taskAlias"] = task_alias
     
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -148,6 +151,10 @@ def main():
         "--task-key",
         help="Task identifier for multiple image APIs"
     )
+    parser.add_argument(
+        "--task-alias",
+        help="Human-readable task name shown in the device task list"
+    )
     
     args = parser.parse_args()
     
@@ -159,7 +166,8 @@ def main():
         dither_type=args.dither_type,
         dither_kernel=args.dither_kernel,
         refresh_now=args.refresh_now,
-        task_key=args.task_key
+        task_key=args.task_key,
+        task_alias=args.task_alias
     )
 
 
