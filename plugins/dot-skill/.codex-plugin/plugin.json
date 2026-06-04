@@ -1,7 +1,7 @@
 {
   "name": "dot-skill",
   "version": "0.1.4",
-  "description": "Control Dot. devices from Codex with OpenAPI guidance and helper scripts.",
+  "description": "Control Dot. devices and design Canvas API layouts from Codex.",
   "author": {
     "name": "MindReset",
     "email": "security@mindreset.tech",
@@ -24,8 +24,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Dot Skill",
-    "shortDescription": "Control Dot. devices with OpenAPI helpers.",
-    "longDescription": "Dot Skill gives Codex focused guidance and Python helper scripts for Dot. OpenAPI workflows: listing devices, checking device status, switching content, and sending text, image, or Canvas API content with task alias support. API keys are read from the local DOT_API_KEY environment variable and are not stored in the plugin.",
+    "shortDescription": "Control Dot. devices and design Canvas layouts.",
+    "longDescription": "Dot Skill gives Codex focused guidance for Dot. workflows split into two skills: dot-device-openapi for listing devices, checking status, switching content, and sending Text/Image/Canvas API payloads; and dot-canvas-designer for designing Canvas API windowData layouts, styles, list rendering, conditions, and display formatting. API keys are read from the local DOT_API_KEY environment variable and are not stored in the plugin.",
     "developerName": "MindReset",
     "category": "Productivity",
     "capabilities": [

@@ -16,9 +16,16 @@
 Dot Skill 允许您：
 
 - **控制设备内容**：在 Dot. 设备上显示文本、图像、画板 API 布局等内容
+- **设计画板布局**：使用独立 Canvas designer skill 构建 `windowData` 卡片、仪表盘、列表、条件和格式化
 - **命名 API 内容**：为文本、图像和画板 API 内容设置任务别名，方便在任务列表中区分
 - **查询设备状态**：获取设备电池、WiFi 信号和当前显示内容的实时信息
 - **管理设备**：列出您的设备、获取设备 ID、切换内容
+
+仓库现在拆分为：
+
+- `dot-device-openapi`：设备交互、API 调用和辅助脚本
+- `dot-canvas-designer`：Canvas API `windowData` 设计和布局规则
+- `dot-openapi`：旧安装兼容入口
 
 ## 前提条件
 
@@ -69,17 +76,24 @@ Authorization: Bearer dot_app_<your_api_key>
 npx skills add https://github.com/MindReset/dot_skill.git
 ```
 
-仅安装此 skill：
+仅安装设备交互 skill：
 
 ```bash
-npx skills add https://github.com/MindReset/dot_skill.git --skill dot-openapi
+npx skills add https://github.com/MindReset/dot_skill.git --skill dot-device-openapi
+```
+
+仅安装 Canvas 设计 skill：
+
+```bash
+npx skills add https://github.com/MindReset/dot_skill.git --skill dot-canvas-designer
 ```
 
 ### 手动安装
 
 ```bash
 mkdir -p ~/.agents/skills
-ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
+ln -sfn /path/to/dot_skill/skills/dot-device-openapi ~/.agents/skills/dot-device-openapi
+ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canvas-designer
 ```
 
 安装后请重启您的 agent。
@@ -88,7 +102,7 @@ ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
 
 1. **获取 API 密钥**：按照[官方文档](https://dot.mindreset.tech/docs/service/open/get_api)操作
 2. **获取设备 ID**：按照[官方文档](https://dot.mindreset.tech/docs/service/open/get_device_id)操作
-3. **开始使用 API**：查看 [references/api_reference.md](skills/dot-openapi/references/api_reference.md) 了解所有可用接口
+3. **开始使用 API**：查看 [设备 API 参考](skills/dot-device-openapi/references/api_reference.md) 了解接口，查看 [Canvas windowData 参考](skills/dot-canvas-designer/references/windowdata.md) 了解画板布局
 
 ## Agent 平台兼容性
 
@@ -97,7 +111,7 @@ ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
 | Codex | 已支持 | 使用 `.agents/plugins/marketplace.json` 作为仓库 marketplace |
 | OpenAI GPT Actions | 通过 schema 支持 | 导入 `openapi/dot-openapi.yaml` 并配置 Bearer 认证 |
 | Claude / MCP clients | 计划中 | 目前可先使用 OpenAPI schema，后续可补 remote MCP server |
-| Cursor 和兼容 skill 的 agent | 已支持为 skill 文档 | 安装 `skills/dot-openapi` 或将本仓库作为上下文 |
+| Cursor 和兼容 skill 的 agent | 已支持为 skill 文档 | 安装 `skills/dot-device-openapi` 和/或 `skills/dot-canvas-designer`，或将本仓库作为上下文 |
 | MCP Registry | 计划中 | 等 Dot MCP server 存在后发布 server metadata |
 
 ## API 概览
@@ -114,7 +128,7 @@ ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
 
 ## 辅助脚本
 
-`scripts/` 目录包含 Python 辅助脚本：
+`skills/dot-device-openapi/scripts/` 目录包含 Python 辅助脚本：
 
 - `send_text.py`：向设备发送文本
 - `send_image.py`：向设备发送图像
@@ -128,13 +142,27 @@ ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
 
 ## 资源
 
-- [API 参考](skills/dot-openapi/references/api_reference.md) - 完整的 API 文档
-- [认证指南](skills/dot-openapi/references/authentication.md) - 如何认证请求
+- [设备 API 参考](skills/dot-device-openapi/references/api_reference.md) - 设备交互和接口文档
+- [Canvas windowData 参考](skills/dot-canvas-designer/references/windowdata.md) - 画板布局设计规则
+- [Canvas 示例](skills/dot-canvas-designer/references/examples.md) - 画板 payload 示例
+- [认证指南](skills/dot-device-openapi/references/authentication.md) - 如何认证请求
 - [OpenAPI Schema](openapi/dot-openapi.yaml) - 可导入 Actions 和兼容 OpenAPI 的工具
 - [安全政策](SECURITY.md) - 密钥处理和漏洞报告
 - [Dot. 官方安全政策](https://dot.mindreset.tech/docs/security_policy) - 负责任披露流程
 - [支持说明](SUPPORT.md) - Issue 提交指南
 - [更新日志](CHANGELOG.md) - 发布记录
+
+## 维护说明
+
+本仓库是面向用户的 Dot. 设备控制与 Canvas 设计 skill。Dot Web 的 API 行为发生变化时，需要同步检查：
+
+- `openapi/dot-openapi.yaml`，供 OpenAPI 兼容 agent 和 GPT Actions 使用
+- `skills/dot-device-openapi`，设备交互脚本和接口说明
+- `skills/dot-canvas-designer`，Canvas API payload 设计规则
+- `plugins/dot-skill`，Codex plugin 打包内容
+- `dot_web_docs` 中的 Dot Web 公开文档
+
+仅内部使用的 Studio V2 实现、MongoDB 迁移和渲染排障流程应放在 `dot_internal_skill`，不要写入这个公开 package。
 
 ## 许可证
 

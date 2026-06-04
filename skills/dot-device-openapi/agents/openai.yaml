@@ -1,0 +1,51 @@
+name: dot-device-openapi
+description: |
+  Dot Device OpenAPI - interact with Dot. devices.
+
+  Key capabilities:
+  - List devices
+  - Get device status
+  - Switch to next content
+  - List device tasks
+  - Send Text API content
+  - Send Image API content
+  - Send finished Canvas API payloads
+
+instructions: |
+  Use this agent metadata for device operations only.
+
+  For Canvas layout design, use dot-canvas-designer first. Return here only to send the finished Canvas payload.
+
+  Always include:
+  Authorization: Bearer dot_app_<api_key>
+
+  Rate limit: 10 requests/second.
+
+tools:
+- type: http
+  name: dot_openapi
+  base_url: https://dot.mindreset.tech
+  headers:
+    Content-Type: application/json
+  endpoints:
+  - path: /api/authV2/open/devices
+    method: GET
+    description: List all devices
+  - path: /api/authV2/open/device/{deviceId}/status
+    method: GET
+    description: Get device status
+  - path: /api/authV2/open/device/{deviceId}/next
+    method: POST
+    description: Switch to next content
+  - path: /api/authV2/open/device/{deviceId}/text
+    method: POST
+    description: Display text content
+  - path: /api/authV2/open/device/{deviceId}/image
+    method: POST
+    description: Display image content
+  - path: /api/authV2/open/device/{deviceId}/canvas
+    method: POST
+    description: Display a finished Canvas API payload
+  - path: /api/authV2/open/device/{deviceId}/{taskType}/list
+    method: GET
+    description: List device tasks

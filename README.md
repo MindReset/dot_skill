@@ -16,9 +16,16 @@ A skill for AI agents to interact with Dot. devices through the OpenAPI.
 Dot Skill allows you to:
 
 - **Control device content**: Display text, images, Canvas API layouts, and other content on your Dot. devices
+- **Design Canvas layouts**: Build `windowData` cards, dashboards, list views, conditions, and formatting with a dedicated Canvas designer skill
 - **Name API content**: Set a task alias for text, image, and Canvas API items so they are easy to identify
 - **Query device status**: Get real-time information about device battery, WiFi signal, and current display
 - **Manage devices**: List your devices, get device IDs, and switch between content
+
+The repository now splits responsibilities into:
+
+- `dot-device-openapi`: device interaction, API calls, and helper scripts
+- `dot-canvas-designer`: Canvas API `windowData` design and layout guidance
+- `dot-openapi`: compatibility router for older installs
 
 ## Prerequisites
 
@@ -69,17 +76,24 @@ Public GPTs or agents that call Dot. APIs should include the Dot. privacy policy
 npx skills add https://github.com/MindReset/dot_skill.git
 ```
 
-Install only this skill:
+Install only the device interaction skill:
 
 ```bash
-npx skills add https://github.com/MindReset/dot_skill.git --skill dot-openapi
+npx skills add https://github.com/MindReset/dot_skill.git --skill dot-device-openapi
+```
+
+Install only the Canvas designer skill:
+
+```bash
+npx skills add https://github.com/MindReset/dot_skill.git --skill dot-canvas-designer
 ```
 
 ### Manual Install
 
 ```bash
 mkdir -p ~/.agents/skills
-ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
+ln -sfn /path/to/dot_skill/skills/dot-device-openapi ~/.agents/skills/dot-device-openapi
+ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canvas-designer
 ```
 
 Restart your agent after installation.
@@ -88,7 +102,7 @@ Restart your agent after installation.
 
 1. **Get your API key**: Follow the [official documentation](https://dot.mindreset.tech/docs/service/open/get_api)
 2. **Get your device ID**: Follow the [official documentation](https://dot.mindreset.tech/docs/service/open/get_device_id)
-3. **Start using the API**: See [references/api_reference.md](skills/dot-openapi/references/api_reference.md) for all available endpoints
+3. **Start using the API**: See [Device API Reference](skills/dot-device-openapi/references/api_reference.md) for endpoints and [Canvas windowData Reference](skills/dot-canvas-designer/references/windowdata.md) for Canvas layout design
 
 ## Agent Platform Compatibility
 
@@ -97,7 +111,7 @@ Restart your agent after installation.
 | Codex | Supported | Repository marketplace at `.agents/plugins/marketplace.json` |
 | OpenAI GPT Actions | Supported via schema | Import `openapi/dot-openapi.yaml` and configure Bearer auth |
 | Claude / MCP clients | Planned | Use the OpenAPI schema today; a remote MCP server can be added later |
-| Cursor and skill-compatible agents | Supported as skill docs | Install `skills/dot-openapi` or read this repository as context |
+| Cursor and skill-compatible agents | Supported as skill docs | Install `skills/dot-device-openapi` and/or `skills/dot-canvas-designer`, or read this repository as context |
 | MCP Registry | Planned | Publish server metadata after a Dot MCP server exists |
 
 ## API Overview
@@ -114,7 +128,7 @@ Restart your agent after installation.
 
 ## Helper Scripts
 
-The `scripts/` directory contains Python helper scripts:
+The `skills/dot-device-openapi/scripts/` directory contains Python helper scripts:
 
 - `send_text.py`: Send text to a device
 - `send_image.py`: Send an image to a device
@@ -128,13 +142,27 @@ Text, image, and Canvas helper scripts support `--task-alias` to set the human-r
 
 ## Resources
 
-- [API Reference](skills/dot-openapi/references/api_reference.md) - Complete API documentation
-- [Authentication](skills/dot-openapi/references/authentication.md) - How to authenticate requests
+- [Device API Reference](skills/dot-device-openapi/references/api_reference.md) - Device interaction and endpoint documentation
+- [Canvas windowData Reference](skills/dot-canvas-designer/references/windowdata.md) - Canvas layout design rules
+- [Canvas Examples](skills/dot-canvas-designer/references/examples.md) - Example Canvas payloads
+- [Authentication](skills/dot-device-openapi/references/authentication.md) - How to authenticate requests
 - [OpenAPI Schema](openapi/dot-openapi.yaml) - Importable schema for Actions and OpenAPI-compatible tools
 - [Security Policy](SECURITY.md) - Credential handling and vulnerability reporting
 - [Official Dot. Security Policy](https://dot.mindreset.tech/docs/security_policy) - Responsible disclosure process
 - [Support](SUPPORT.md) - Issue reporting guidance
 - [Changelog](CHANGELOG.md) - Release notes
+
+## Maintainer Notes
+
+This repository is the public, user-facing skill package for Dot. device control and Canvas design. When Dot Web changes API behavior, keep these surfaces aligned:
+
+- `openapi/dot-openapi.yaml` for OpenAPI-compatible agents and GPT Actions
+- `skills/dot-device-openapi` for device interaction scripts and endpoint guidance
+- `skills/dot-canvas-designer` for Canvas API payload design rules
+- `plugins/dot-skill` for Codex plugin packaging
+- Dot Web public docs under `dot_web_docs`
+
+Internal-only Studio V2 implementation, MongoDB migration, and render-debugging workflows belong in `dot_internal_skill`, not this public package.
 
 ## License
 
