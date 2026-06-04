@@ -1,0 +1,20 @@
+{
+  "name": "mindreset-dot-skill",
+  "interface": {
+    "displayName": "MindReset Dot Skill"
+  },
+  "plugins": [
+    {
+      "name": "dot-skill",
+      "source": {
+        "source": "local",
+        "path": "./plugins/dot-skill"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

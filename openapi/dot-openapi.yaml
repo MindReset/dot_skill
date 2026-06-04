@@ -1,0 +1,514 @@
+openapi: 3.1.0
+info:
+  title: Dot Skill OpenAPI
+  version: 0.1.4
+  summary: Control Dot. devices through the Dot. OpenAPI.
+  description: |
+    Dot Skill exposes OpenAPI operations for listing Dot. devices, checking device status,
+    switching to the next content item, and sending text, image, or Canvas API content.
+
+    API keys are user-managed. Clients should read credentials from a secure local setting
+    such as the DOT_API_KEY environment variable and send them as a Bearer token.
+  termsOfService: https://dot.mindreset.tech/docs/terms
+  contact:
+    name: MindReset
+    url: https://dot.mindreset.tech
+    email: security@mindreset.tech
+  license:
+    name: MIT
+    url: https://github.com/MindReset/dot_skill/blob/master/LICENSE
+  x-securityPolicyURL: https://dot.mindreset.tech/docs/security_policy
+  x-securityContact: security@mindreset.tech
+externalDocs:
+  description: Dot Skill documentation
+  url: https://dot.mindreset.tech/docs/service/open/skill
+servers:
+  - url: https://dot.mindreset.tech
+security:
+  - bearerAuth: []
+tags:
+  - name: Devices
+    description: Device discovery, status, and task listing.
+  - name: Content
+    description: Text, image, Canvas, and content-switching operations.
+paths:
+  /api/authV2/open/devices:
+    get:
+      operationId: listDevices
+      tags:
+        - Devices
+      summary: List Dot. devices.
+      description: Get all Dot. devices associated with the authenticated account.
+      responses:
+        "200":
+          description: Devices associated with the account.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Device"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/authV2/open/device/{deviceId}/status:
+    get:
+      operationId: getDeviceStatus
+      tags:
+        - Devices
+      summary: Get device status.
+      description: Get current battery, Wi-Fi, display, and render information for a Dot. device.
+      parameters:
+        - $ref: "#/components/parameters/DeviceId"
+      responses:
+        "200":
+          description: Current device status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeviceStatusResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/authV2/open/device/{deviceId}/next:
+    post:
+      operationId: switchNextContent
+      tags:
+        - Content
+      summary: Switch to next content.
+      description: Immediately switch the device to the next content item in its rotation.
+      parameters:
+        - $ref: "#/components/parameters/DeviceId"
+      responses:
+        "200":
+          $ref: "#/components/responses/Message"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/authV2/open/device/{deviceId}/text:
+    post:
+      operationId: displayText
+      tags:
+        - Content
+      summary: Display text content.
+      description: |
+        Display text content on a Dot. device. The device must already have a Text API
+        content item in its loop task in Dot. App Content Studio.
+      parameters:
+        - $ref: "#/components/parameters/DeviceId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TextContentRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/Message"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/authV2/open/device/{deviceId}/image:
+    post:
+      operationId: displayImage
+      tags:
+        - Content
+      summary: Display image content.
+      description: |
+        Display PNG image content on a Dot. device. The device must already have an Image API
+        content item in its loop task in Dot. App Content Studio.
+      parameters:
+        - $ref: "#/components/parameters/DeviceId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImageContentRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/Message"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/authV2/open/device/{deviceId}/canvas:
+    post:
+      operationId: displayCanvas
+      tags:
+        - Content
+      summary: Display Canvas API content.
+      description: |
+        Display a custom Canvas API layout on a Dot. device. The device must already have a
+        Canvas API content item in its loop task in Dot. App Content Studio.
+      parameters:
+        - $ref: "#/components/parameters/DeviceId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CanvasContentRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/Message"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/authV2/open/device/{deviceId}/{taskType}/list:
+    get:
+      operationId: listDeviceTasks
+      tags:
+        - Devices
+      summary: List device tasks.
+      description: List loop or fixed tasks for a Dot. device.
+      parameters:
+        - $ref: "#/components/parameters/DeviceId"
+        - name: taskType
+          in: path
+          required: true
+          description: Device task group to list.
+          schema:
+            type: string
+            enum:
+              - loop
+              - fixed
+      responses:
+        "200":
+          description: Device tasks.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DeviceTask"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: dot_app API key
+      description: Dot. API key, for example `dot_app_<your_api_key>`.
+  parameters:
+    DeviceId:
+      name: deviceId
+      in: path
+      required: true
+      description: Dot. device serial number.
+      schema:
+        type: string
+        example: ABCD1234ABCD
+  responses:
+    Message:
+      description: Operation result.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MessageResponse"
+    Unauthorized:
+      description: Invalid or missing API key.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Device or resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    RateLimited:
+      description: Rate limit exceeded. Limit is 10 requests per second.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    Device:
+      type: object
+      additionalProperties: true
+      properties:
+        alias:
+          type:
+            - string
+            - "null"
+          description: Device alias.
+        location:
+          type:
+            - string
+            - "null"
+          description: Device location.
+        series:
+          type: string
+          example: quote
+        model:
+          type: string
+          example: quote_0
+        edition:
+          type: number
+          example: 1
+        id:
+          type: string
+          description: Device serial number.
+          example: ABCD1234ABCD
+    DeviceStatusResponse:
+      type: object
+      additionalProperties: true
+      properties:
+        deviceId:
+          type: string
+        alias:
+          type:
+            - string
+            - "null"
+        location:
+          type:
+            - string
+            - "null"
+        status:
+          type: object
+          additionalProperties: true
+          properties:
+            version:
+              type: string
+            current:
+              type: string
+            description:
+              type: string
+            battery:
+              type: string
+            wifi:
+              type: string
+        renderInfo:
+          type: object
+          additionalProperties: true
+    TextContentRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        refreshNow:
+          type: boolean
+          default: true
+        taskKey:
+          type: string
+        taskAlias:
+          $ref: "#/components/schemas/TaskAlias"
+        title:
+          type: string
+        message:
+          type: string
+          description: Main content text. Supports newline and tab characters.
+        signature:
+          type: string
+        icon:
+          type: string
+          description: Base64 encoded PNG icon or full http(s) image URL.
+        link:
+          type: string
+          format: uri
+        styles:
+          type: object
+          additionalProperties: false
+          properties:
+            title:
+              $ref: "#/components/schemas/TextStyle"
+            message:
+              $ref: "#/components/schemas/MessageTextStyle"
+            signature:
+              $ref: "#/components/schemas/TextStyle"
+    TextStyle:
+      type: object
+      additionalProperties: false
+      properties:
+        fontFamily:
+          type: string
+        fontSize:
+          type: number
+          minimum: 8
+          maximum: 48
+        fontWeight:
+          type: number
+          enum:
+            - 100
+            - 200
+            - 300
+            - 400
+            - 500
+            - 600
+            - 700
+            - 800
+            - 900
+    MessageTextStyle:
+      allOf:
+        - $ref: "#/components/schemas/TextStyle"
+        - type: object
+          properties:
+            lineHeight:
+              type: number
+              minimum: 0.8
+              maximum: 3
+    ImageContentRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - image
+      properties:
+        refreshNow:
+          type: boolean
+          default: true
+        taskKey:
+          type: string
+        taskAlias:
+          $ref: "#/components/schemas/TaskAlias"
+        image:
+          type: string
+          description: Base64 encoded PNG image data or full http(s) image URL.
+        link:
+          type: string
+          format: uri
+        border:
+          $ref: "#/components/schemas/Border"
+        ditherType:
+          type: string
+          enum:
+            - DIFFUSION
+            - ORDERED
+            - NONE
+          default: DIFFUSION
+        ditherKernel:
+          $ref: "#/components/schemas/DitherKernel"
+    CanvasContentRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - windowData
+      properties:
+        refreshNow:
+          type: boolean
+          default: true
+        taskKey:
+          type: string
+        taskAlias:
+          $ref: "#/components/schemas/TaskAlias"
+        data:
+          type: object
+          additionalProperties: true
+          description: Plain JSON values read by the Canvas layout.
+        windowData:
+          $ref: "#/components/schemas/CanvasWindowData"
+        layoutFull:
+          type: object
+          additionalProperties: true
+          description: FULL layout override with optional `tw` and `style`.
+        link:
+          type: string
+          format: uri
+        border:
+          $ref: "#/components/schemas/Border"
+    CanvasWindowData:
+      type: object
+      additionalProperties: true
+      required:
+        - default
+      properties:
+        default:
+          type: array
+          items:
+            $ref: "#/components/schemas/CanvasElement"
+    CanvasElement:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - props
+      properties:
+        type:
+          type: string
+          enum:
+            - div
+            - span
+            - img
+        props:
+          type: object
+          additionalProperties: true
+          description: Canvas render props such as `tw`, `style`, and `children`.
+    DeviceTask:
+      type: object
+      additionalProperties: true
+      properties:
+        type:
+          type: string
+          enum:
+            - TEXT_API
+            - IMAGE_API
+            - CANVAS_API
+            - GENERAL
+        key:
+          type:
+            - string
+            - "null"
+          description: Task unique identifier. Use as `taskKey` for content requests.
+        refreshNow:
+          type: boolean
+        taskAlias:
+          $ref: "#/components/schemas/TaskAlias"
+    TaskAlias:
+      oneOf:
+        - type: string
+          maxLength: 100
+        - type: number
+      description: Human-readable task name shown in the device task list.
+    Border:
+      type: number
+      enum:
+        - 0
+        - 1
+      default: 0
+      description: Screen border color. 0 is white, 1 is black.
+    DitherKernel:
+      type: string
+      enum:
+        - THRESHOLD
+        - ATKINSON
+        - BURKES
+        - FLOYD_STEINBERG
+        - SIERRA2
+        - STUCKI
+        - JARVIS_JUDICE_NINKE
+        - DIFFUSION_ROW
+        - DIFFUSION_COLUMN
+        - DIFFUSION_2D
+      default: FLOYD_STEINBERG
+    MessageResponse:
+      type: object
+      additionalProperties: true
+      properties:
+        message:
+          type: string
+    ErrorResponse:
+      type: object
+      additionalProperties: true
+      properties:
+        message:
+          type: string

@@ -1,0 +1,50 @@
+{
+  "name": "dot-skill",
+  "version": "0.1.4",
+  "description": "Control Dot. devices from Codex with OpenAPI guidance and helper scripts.",
+  "author": {
+    "name": "MindReset",
+    "email": "security@mindreset.tech",
+    "url": "https://github.com/MindReset"
+  },
+  "homepage": "https://dot.mindreset.tech/docs/service/open/skill",
+  "repository": "https://github.com/MindReset/dot_skill",
+  "license": "MIT",
+  "keywords": [
+    "dot",
+    "mindreset",
+    "dot-skill",
+    "openapi",
+    "device-control",
+    "e-ink",
+    "canvas-api",
+    "task-alias",
+    "automation"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Dot Skill",
+    "shortDescription": "Control Dot. devices with OpenAPI helpers.",
+    "longDescription": "Dot Skill gives Codex focused guidance and Python helper scripts for Dot. OpenAPI workflows: listing devices, checking device status, switching content, and sending text, image, or Canvas API content with task alias support. API keys are read from the local DOT_API_KEY environment variable and are not stored in the plugin.",
+    "developerName": "MindReset",
+    "category": "Productivity",
+    "capabilities": [
+      "Device Control",
+      "Scripts",
+      "OpenAPI",
+      "Canvas Layouts",
+      "Local Credentials"
+    ],
+    "websiteURL": "https://dot.mindreset.tech/docs/service/open/skill",
+    "privacyPolicyURL": "https://dot.mindreset.tech/docs/privacy",
+    "termsOfServiceURL": "https://dot.mindreset.tech/docs/terms",
+    "defaultPrompt": [
+      "List my Dot devices.",
+      "Send a message to my Dot device.",
+      "Create a Dot Canvas dashboard."
+    ],
+    "brandColor": "#111827",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png"
+  }
+}

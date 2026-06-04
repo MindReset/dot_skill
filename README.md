@@ -2,6 +2,11 @@
 
 **Languages:** [English](./README.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
 
+![Codex Plugin](https://img.shields.io/badge/Codex-Plugin-black)
+![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-blue)
+![MCP Ready](https://img.shields.io/badge/MCP-ready-blueviolet)
+![License: MIT](https://img.shields.io/badge/License-MIT-green)
+
 A skill for AI agents to interact with Dot. devices through the OpenAPI.
 
 📚 **Official Documentation**: [https://dot.mindreset.tech/docs/service/open/skill](https://dot.mindreset.tech/docs/service/open/skill)
@@ -22,6 +27,41 @@ Dot Skill allows you to:
 - `python3` installed locally (for using the helper scripts)
 
 ## Installation
+
+### Install as a Codex plugin
+
+Add this repository as a Codex marketplace:
+
+```bash
+codex plugin marketplace add git@github.com:MindReset/dot_skill.git
+```
+
+Then install the plugin:
+
+```bash
+codex plugin add dot-skill@mindreset-dot-skill
+```
+
+Start a new Codex thread after installation so Codex can load the plugin's skills.
+
+### Use with GPT Actions or OpenAPI-compatible agents
+
+Import the OpenAPI schema:
+
+```text
+https://raw.githubusercontent.com/MindReset/dot_skill/master/openapi/dot-openapi.yaml
+```
+
+Configure Bearer authentication with a Dot. API key:
+
+```http
+Authorization: Bearer dot_app_<your_api_key>
+```
+
+Public GPTs or agents that call Dot. APIs should include the Dot. privacy policy and terms:
+
+- Privacy Policy: [https://dot.mindreset.tech/docs/privacy](https://dot.mindreset.tech/docs/privacy)
+- Terms of Service: [https://dot.mindreset.tech/docs/terms](https://dot.mindreset.tech/docs/terms)
 
 ### Install with `npx skills add` (Recommended)
 
@@ -49,6 +89,16 @@ Restart your agent after installation.
 1. **Get your API key**: Follow the [official documentation](https://dot.mindreset.tech/docs/service/open/get_api)
 2. **Get your device ID**: Follow the [official documentation](https://dot.mindreset.tech/docs/service/open/get_device_id)
 3. **Start using the API**: See [references/api_reference.md](skills/dot-openapi/references/api_reference.md) for all available endpoints
+
+## Agent Platform Compatibility
+
+| Platform | Status | Integration path |
+| --- | --- | --- |
+| Codex | Supported | Repository marketplace at `.agents/plugins/marketplace.json` |
+| OpenAI GPT Actions | Supported via schema | Import `openapi/dot-openapi.yaml` and configure Bearer auth |
+| Claude / MCP clients | Planned | Use the OpenAPI schema today; a remote MCP server can be added later |
+| Cursor and skill-compatible agents | Supported as skill docs | Install `skills/dot-openapi` or read this repository as context |
+| MCP Registry | Planned | Publish server metadata after a Dot MCP server exists |
 
 ## API Overview
 
@@ -80,6 +130,11 @@ Text, image, and Canvas helper scripts support `--task-alias` to set the human-r
 
 - [API Reference](skills/dot-openapi/references/api_reference.md) - Complete API documentation
 - [Authentication](skills/dot-openapi/references/authentication.md) - How to authenticate requests
+- [OpenAPI Schema](openapi/dot-openapi.yaml) - Importable schema for Actions and OpenAPI-compatible tools
+- [Security Policy](SECURITY.md) - Credential handling and vulnerability reporting
+- [Official Dot. Security Policy](https://dot.mindreset.tech/docs/security_policy) - Responsible disclosure process
+- [Support](SUPPORT.md) - Issue reporting guidance
+- [Changelog](CHANGELOG.md) - Release notes
 
 ## License
 

@@ -1,0 +1,102 @@
+name: dot-skill
+description: |
+  Dot Skill - Interact with Dot. devices through the OpenAPI. 
+  Control text/image/canvas display, query device status, and manage devices.
+
+  Key capabilities:
+  - Display text content on devices
+  - Display image content on devices  
+  - Display Canvas API layouts using a React object-like JSON structure with Tailwind-like classes
+  - Get device status and information
+  - List all devices
+  - Switch to next content
+  - List device tasks
+
+instructions: |
+  When user wants to interact with Dot. devices:
+
+  1. First obtain API key (ask user or from DOT_API_KEY env var)
+  2. Obtain device ID from user
+  3. For Text API, Image API, or Canvas API writes, ensure the matching content has already been added to the device loop task in Dot. App Content Studio
+  4. Use appropriate endpoint for the task:
+     - POST /api/authV2/open/device/:deviceId/text - Display text
+     - POST /api/authV2/open/device/:deviceId/image - Display image
+     - POST /api/authV2/open/device/:deviceId/canvas - Display a custom Canvas API layout
+     - GET /api/authV2/open/device/:deviceId/status - Get status
+     - GET /api/authV2/open/devices - List devices
+     - POST /api/authV2/open/device/:deviceId/next - Next content
+     - GET /api/authV2/open/device/:deviceId/:taskType/list - List tasks
+
+  5. Always include: Authorization: Bearer dot_app_<api_key>
+  6. Rate limit: 10 requests/second
+
+  For text API, parameters include: refreshNow, taskKey, taskAlias, title, message (supports \n and \t), signature, icon (base64 PNG or full http(s) image URL), link, styles.title/signature with fontFamily/fontSize/fontWeight, and styles.message with fontFamily/fontSize/fontWeight/lineHeight
+  For image API, parameters include: refreshNow, taskKey, taskAlias, image (base64 PNG or full http(s) image URL), link, border (0/1), ditherType, ditherKernel
+  For Canvas API, parameters include: refreshNow, taskKey, taskAlias, data, windowData, layoutFull, link, border. Use Canvas API when the user wants a custom card, dashboard, status panel, or layout that is more expressive than Text API but should not require a locally pre-rendered image like Image API.
+  For Text API, Image API, and Canvas API, use top-level taskAlias when the user wants a human-readable task-list name. Omit taskAlias to keep the existing task name. Send taskAlias as an empty string or null only when the user explicitly wants to clear the name. Never put taskAlias inside Canvas data.
+
+  Canvas API model:
+  - Build windowData as JSON, not JSX, JavaScript, raw HTML, external CSS, or an image.
+  - CSS-like styling belongs in props.style or props.tw.
+  - windowData.default must be an array of React object-like elements.
+  - Each element must look like {"type":"div","props":{...}}.
+  - Allowed element types are only div, span, and img.
+  - props.tw may contain Tailwind-like utility classes.
+  - props.style may contain inline style values, but only strings or numbers.
+  - props.children may be a string, one element object, or an array of element objects.
+  - Dynamic values may only use simple get expressions such as {{get inputData "title" default="-"}}.
+  - Do all computation, filtering, formatting, truncation, and unit conversion before sending JSON.
+  - Do not generate arbitrary JSX, raw HTML, external CSS, scripts, custom components, browser APIs, loops, conditions, or unsupported template helpers.
+
+  Canvas API style surface:
+  - props.style supports the Dot Canvas static style subset.
+  - props.tw supports Tailwind-like syntax plus Dot extensions.
+  - layoutFull.tw and layoutFull.style override the Dot layout wrapper for full-bleed screens, background, and padding.
+  - The props.style support list is aligned with the static CSS support table. Dot Canvas style categories include CSS variables, display, position, color, margin, padding, top/right/bottom/left, width/height, min/max size, border, borderRadius, Flexbox, gap, fontFamily, fontSize, fontWeight, fontStyle, tabSize, textAlign, textIndent, textTransform, textOverflow, textDecoration, textShadow, letterSpacing, lineHeight, whiteSpace, lineClamp, wordBreak, textWrap, backgroundColor, backgroundImage, backgroundPosition, backgroundSize, backgroundClip, backgroundRepeat, transform, transformOrigin, objectFit, objectPosition, opacity, boxSizing, boxShadow, overflow, filter, clipPath, mask, and WebkitTextStroke.
+  - Font utilities, breakpoint processing, and img-* image-processing classes are Dot custom Tailwind extensions on top of props.tw.
+  - Canvas API is not a full browser environment: do not use style tags, external link tags, script tags, 3D transforms, z-index, calc(), arbitrary JS expressions, React hooks, browser APIs, external stylesheets, or custom components.
+  - Common tw classes include flex, flex-row, flex-col, flex-1, shrink-0, grow, items-*, justify-*, w-full, h-full, w-[84px], h-[40px], min-w-0, min-h-0, max-h-[200px], gap-*, gap-[5px], p-*, px-[8px], py-[5px], bg-*, text-*, border*, rounded*, overflow-hidden, box-border, box-content, fill-black, and fill-white.
+  - If a Tailwind-like class is uncertain, prefer props.style.
+  - Font classes include regular fonts like text-18-chillduansans, text-[20px]-playfairdisplay, text-lg-chillduansans, and pixel fonts like text-pixel-12-zpix.
+  - Image-processing classes on img.props.tw include img-dither-none/diffusion/ordered, img-kernel-threshold/atkinson/burkes/floyd-steinberg/sierra2/stucki/jarvis-judice-ninke/diffusion-row/diffusion-column/diffusion-2d, and img-levels-2/3/4/8/16.
+
+  Canvas API boundaries:
+  - data JSON size <= 64 KB.
+  - windowData JSON size <= 128 KB.
+  - layoutFull JSON size <= 8 KB.
+  - element count <= 80.
+  - nesting depth <= 16.
+  - string length inside windowData <= 4000 characters.
+  - disallowed prop keys: dangerouslySetInnerHTML, ref, srcSet.
+  - disallowed unsafe keys: __proto__, constructor, prototype.
+  - reserved top-level data keys: type, key, windowData, layoutFull, taskAlias, link, border, __proto__, constructor, prototype.
+  - For reliable rendering, prefer bounded flex layouts, explicit colors, fixed heights where needed, overflow-hidden, lineClamp, textOverflow, min-w-0, and min-h-0.
+
+tools:
+- type: http
+  name: dot_openapi
+  base_url: https://dot.mindreset.tech
+  headers:
+    Content-Type: application/json
+  endpoints:
+  - path: /api/authV2/open/devices
+    method: GET
+    description: List all devices
+  - path: /api/authV2/open/device/{deviceId}/status
+    method: GET
+    description: Get device status
+  - path: /api/authV2/open/device/{deviceId}/next
+    method: POST
+    description: Switch to next content
+  - path: /api/authV2/open/device/{deviceId}/text
+    method: POST
+    description: Display text content
+  - path: /api/authV2/open/device/{deviceId}/image
+    method: POST
+    description: Display image content
+  - path: /api/authV2/open/device/{deviceId}/canvas
+    method: POST
+    description: Display a custom Canvas API layout
+  - path: /api/authV2/open/device/{deviceId}/{taskType}/list
+    method: GET
+    description: List device tasks
