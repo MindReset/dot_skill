@@ -5,6 +5,7 @@ description: |
   Key capabilities:
   - List devices
   - Get device status
+  - Read and update device settings
   - Switch to next content
   - List device tasks
   - Send Text API content
@@ -31,9 +32,18 @@ tools:
   - path: /api/authV2/open/devices
     method: GET
     description: List all devices
+  - path: /api/authV2/open/timezones
+    method: GET
+    description: List supported timezones
   - path: /api/authV2/open/device/{deviceId}/status
     method: GET
     description: Get device status
+  - path: /api/authV2/open/device/{deviceId}/settings
+    method: GET
+    description: Get device settings
+  - path: /api/authV2/open/device/{deviceId}/settings
+    method: POST
+    description: Update device settings
   - path: /api/authV2/open/device/{deviceId}/next
     method: POST
     description: Switch to next content

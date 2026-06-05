@@ -29,6 +29,8 @@ security:
 tags:
   - name: Devices
     description: Device discovery, status, and task listing.
+  - name: Settings
+    description: Device settings and timezone helpers.
   - name: Content
     description: Text, image, Canvas, and content-switching operations.
 paths:
@@ -52,6 +54,26 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "429":
           $ref: "#/components/responses/RateLimited"
+  /api/authV2/open/timezones:
+    get:
+      operationId: listTimezones
+      tags:
+        - Settings
+      summary: List supported timezones.
+      description: Get timezone keys accepted by device settings APIs.
+      responses:
+        "200":
+          description: Supported timezones.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Timezone"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
   /api/authV2/open/device/{deviceId}/status:
     get:
       operationId: getDeviceStatus
@@ -68,6 +90,55 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeviceStatusResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/authV2/open/device/{deviceId}/settings:
+    get:
+      operationId: getDeviceSettings
+      tags:
+        - Settings
+      summary: Get device settings.
+      description: Get editable settings for a Dot. device owned by the authenticated account.
+      parameters:
+        - $ref: "#/components/parameters/DeviceId"
+      responses:
+        "200":
+          description: Current device settings.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeviceSettingsResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+    post:
+      operationId: updateDeviceSettings
+      tags:
+        - Settings
+      summary: Update device settings.
+      description: |
+        Update one or more settings for a Dot. device owned by the authenticated account.
+        Only POST is supported for writes. Omitted fields are left unchanged.
+      parameters:
+        - $ref: "#/components/parameters/DeviceId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeviceSettingsRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/Message"
+        "400":
+          $ref: "#/components/responses/BadRequest"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
@@ -226,6 +297,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MessageResponse"
+    BadRequest:
+      description: Invalid request parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
     Unauthorized:
       description: Invalid or missing API key.
       content:
@@ -272,6 +349,122 @@ components:
           type: string
           description: Device serial number.
           example: ABCD1234ABCD
+    Timezone:
+      type: object
+      additionalProperties: false
+      required:
+        - key
+        - name
+        - utcOffsetMinutes
+        - utcOffsetLabel
+      properties:
+        key:
+          $ref: "#/components/schemas/TimezoneKey"
+        name:
+          type: string
+          example: Shanghai
+        utcOffsetMinutes:
+          type: number
+          example: 480
+        utcOffsetLabel:
+          type: string
+          example: UTC+8
+    TimezoneKey:
+      type: string
+      description: Supported IANA timezone key. Use List Timezones for the full localized list.
+      enum:
+        - Pacific/Midway
+        - Pacific/Honolulu
+        - America/Anchorage
+        - America/Los_Angeles
+        - America/Phoenix
+        - America/Denver
+        - America/Chicago
+        - America/New_York
+        - America/Caracas
+        - America/Santiago
+        - America/Argentina/Buenos_Aires
+        - America/Sao_Paulo
+        - Atlantic/South_Georgia
+        - Atlantic/Azores
+        - Europe/London
+        - Europe/Dublin
+        - Europe/Paris
+        - Europe/Rome
+        - Europe/Berlin
+        - Europe/Madrid
+        - Europe/Athens
+        - Europe/Moscow
+        - Asia/Dubai
+        - Asia/Kabul
+        - Asia/Karachi
+        - Asia/Kolkata
+        - Asia/Kathmandu
+        - Asia/Dhaka
+        - Asia/Yangon
+        - Asia/Bangkok
+        - Asia/Singapore
+        - Asia/Shanghai
+        - Asia/Hong_Kong
+        - Asia/Taipei
+        - Asia/Tokyo
+        - Asia/Seoul
+        - Australia/Adelaide
+        - Australia/Darwin
+        - Australia/Sydney
+        - Australia/Brisbane
+        - Pacific/Guam
+        - Australia/Hobart
+        - Pacific/Port_Moresby
+        - Pacific/Noumea
+        - Pacific/Auckland
+        - Pacific/Fiji
+        - Pacific/Tongatapu
+        - Pacific/Apia
+        - Pacific/Kiritimati
+        - America/Tijuana
+        - America/Mexico_City
+        - America/Monterrey
+        - America/Bogota
+        - America/Lima
+        - America/La_Paz
+        - America/Montevideo
+        - America/Halifax
+        - America/St_Johns
+        - Europe/Lisbon
+        - Europe/Warsaw
+        - Europe/Prague
+        - Europe/Budapest
+        - Europe/Bucharest
+        - Europe/Kiev
+        - Europe/Istanbul
+        - Asia/Tehran
+        - Asia/Kuwait
+        - Asia/Baghdad
+        - Asia/Riyadh
+        - Asia/Jerusalem
+        - Asia/Colombo
+        - Asia/Jakarta
+        - Asia/Manila
+        - Asia/Kuala_Lumpur
+        - Asia/Ulaanbaatar
+        - Asia/Yakutsk
+        - Asia/Vladivostok
+        - Asia/Magadan
+        - Asia/Kamchatka
+        - Australia/Perth
+        - Australia/Melbourne
+        - Pacific/Chatham
+        - Pacific/Marquesas
+        - Africa/Cairo
+        - Africa/Johannesburg
+        - Africa/Lagos
+        - Africa/Nairobi
+        - Africa/Casablanca
+        - America/Toronto
+        - America/Vancouver
+        - America/Winnipeg
+        - America/Edmonton
     DeviceStatusResponse:
       type: object
       additionalProperties: true
@@ -303,6 +496,95 @@ components:
         renderInfo:
           type: object
           additionalProperties: true
+    DeviceSettingsRequest:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        alias:
+          type:
+            - string
+            - "null"
+          maxLength: 100
+          description: Device alias. Send null or an empty string to clear it.
+        location:
+          type:
+            - string
+            - "null"
+          maxLength: 100
+          description: Device location. Send null or an empty string to clear it.
+        timezone:
+          $ref: "#/components/schemas/TimezoneKey"
+        interval:
+          $ref: "#/components/schemas/DeviceSettingsInterval"
+        sleep:
+          $ref: "#/components/schemas/DeviceSettingsSleep"
+    DeviceSettingsInterval:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        powerMs:
+          type: integer
+          minimum: 60000
+          maximum: 86400000
+          multipleOf: 60000
+          description: Refresh interval in milliseconds while connected to power.
+        batteryMs:
+          type: integer
+          minimum: 900000
+          maximum: 43200000
+          multipleOf: 60000
+          description: Refresh interval in milliseconds while using battery power.
+    DeviceSettingsSleep:
+      type: object
+      additionalProperties: false
+      required:
+        - enabled
+        - start
+        - end
+      properties:
+        enabled:
+          type: boolean
+        start:
+          type: string
+          pattern: "^([01]\\d|2[0-3]):([0-5]\\d)$"
+          example: "23:00"
+          description: Local wall-clock start time in the device timezone.
+        end:
+          type: string
+          pattern: "^([01]\\d|2[0-3]):([0-5]\\d)$"
+          example: "07:00"
+          description: Local wall-clock end time in the device timezone. If earlier than start, it means the next day.
+    DeviceSettingsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - deviceId
+        - alias
+        - location
+        - timezone
+        - interval
+        - sleep
+      properties:
+        deviceId:
+          type: string
+        alias:
+          type:
+            - string
+            - "null"
+        location:
+          type:
+            - string
+            - "null"
+        timezone:
+          $ref: "#/components/schemas/TimezoneKey"
+        interval:
+          $ref: "#/components/schemas/DeviceSettingsInterval"
+        sleep:
+          oneOf:
+            - $ref: "#/components/schemas/DeviceSettingsSleep"
+            - type: "null"
     TextContentRequest:
       type: object
       additionalProperties: false
@@ -323,7 +605,7 @@ components:
           type: string
         icon:
           type: string
-          description: Base64 encoded PNG icon or full http(s) image URL.
+          description: Optional PNG icon. Send either bare PNG Base64, a data:image/png;base64, data URL, or a full http(s) image URL. Base64 payloads must decode to at most 1MB. Remote URLs must be anonymously accessible, no longer than 2048 characters, return an image/* response body, and the response body must be at most 3MB.
         link:
           type: string
           format: uri
@@ -383,7 +665,7 @@ components:
           $ref: "#/components/schemas/TaskAlias"
         image:
           type: string
-          description: Base64 encoded PNG image data or full http(s) image URL.
+          description: Required image content. Send either bare PNG Base64, a data:image/png;base64, data URL, or a full http(s) image URL. Base64 payloads must decode to at most 3MB. Remote URLs must be anonymously accessible, no longer than 2048 characters, return an image/* response body, and the response body must be at most 3MB.
         link:
           type: string
           format: uri

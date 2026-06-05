@@ -9,6 +9,7 @@ Use this skill when the user wants to operate a Dot. device:
 
 - List devices or find a device ID
 - Check device status
+- Read or update device settings
 - Switch to the next content
 - Send Text API content
 - Send Image API content
@@ -36,6 +37,9 @@ Successful POST control endpoints (`next`, `text`, `image`, `canvas`) return a J
    - Image display: `POST /api/authV2/open/device/:deviceId/image`
    - Canvas display: `POST /api/authV2/open/device/:deviceId/canvas`
    - Device status: `GET /api/authV2/open/device/:deviceId/status`
+   - Device settings: `GET /api/authV2/open/device/:deviceId/settings`
+   - Update device settings: `POST /api/authV2/open/device/:deviceId/settings`
+   - Timezone list: `GET /api/authV2/open/timezones`
    - Device list: `GET /api/authV2/open/devices`
    - Next content: `POST /api/authV2/open/device/:deviceId/next`
    - Task list: `GET /api/authV2/open/device/:deviceId/:taskType/list`
@@ -47,6 +51,8 @@ Use the scripts in `scripts/` for local execution:
 
 - `list_devices.py`
 - `get_device_status.py`
+- `get_device_settings.py`
+- `update_device_settings.py`
 - `list_tasks.py`
 - `switch_next.py`
 - `send_text.py`
@@ -62,6 +68,8 @@ For Text API, parameters include `refreshNow`, `taskKey`, `taskAlias`, `title`, 
 For Image API, parameters include `refreshNow`, `taskKey`, `taskAlias`, `image`, `link`, `border`, `ditherType`, and `ditherKernel`.
 
 For Canvas API sending, parameters include `refreshNow`, `taskKey`, `taskAlias`, `data`, `windowData`, `layoutFull`, `link`, and `border`. Build or revise `windowData` with `dot-canvas-designer`.
+
+For device settings, parameters include `alias`, `location`, `timezone`, `interval`, and `sleep`. Timezones must be one of the keys returned by `GET /api/authV2/open/timezones`. `interval.powerMs` must be 60,000-86,400,000 ms and `interval.batteryMs` must be 900,000-43,200,000 ms; both must be whole-minute multiples. `sleep.start` and `sleep.end` use local `HH:mm` time in the device timezone, and an end time earlier than start means the next day.
 
 For Text API, Image API, and Canvas API, use top-level `taskAlias` when the user wants a human-readable task-list name. Omit `taskAlias` to keep the existing task name. Send `taskAlias: ""` or `taskAlias: null` only when the user explicitly wants to clear the name. Never put `taskAlias` inside Canvas `data`.
 

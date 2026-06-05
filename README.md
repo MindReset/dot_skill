@@ -119,7 +119,10 @@ Restart your agent after installation.
 | Endpoint                                           | Method | Description            |
 | -------------------------------------------------- | ------ | ---------------------- |
 | `/api/authV2/open/devices`                         | GET    | List all your devices  |
+| `/api/authV2/open/timezones`                       | GET    | List supported timezones |
 | `/api/authV2/open/device/:deviceId/status`         | GET    | Get device status      |
+| `/api/authV2/open/device/:deviceId/settings`       | GET    | Get device settings    |
+| `/api/authV2/open/device/:deviceId/settings`       | POST   | Update device settings |
 | `/api/authV2/open/device/:deviceId/next`           | POST   | Switch to next content |
 | `/api/authV2/open/device/:deviceId/text`           | POST   | Display text content   |
 | `/api/authV2/open/device/:deviceId/image`          | POST   | Display image content  |
@@ -134,6 +137,8 @@ The `skills/dot-device-openapi/scripts/` directory contains Python helper script
 - `send_image.py`: Send an image to a device
 - `send_canvas.py`: Send a Canvas API JSON layout to a device
 - `get_device_status.py`: Get current device status
+- `get_device_settings.py`: Get device settings
+- `update_device_settings.py`: Update device settings
 - `list_devices.py`: List all your devices
 - `list_tasks.py`: List device loop or fixed tasks
 - `switch_next.py`: Switch to the next content

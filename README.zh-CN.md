@@ -119,7 +119,10 @@ ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canva
 | 接口                                               | 方法 | 描述             |
 | -------------------------------------------------- | ---- | ---------------- |
 | `/api/authV2/open/devices`                         | GET  | 列出所有设备     |
+| `/api/authV2/open/timezones`                       | GET  | 列出支持的时区   |
 | `/api/authV2/open/device/:deviceId/status`         | GET  | 获取设备状态     |
+| `/api/authV2/open/device/:deviceId/settings`       | GET  | 获取设备设置     |
+| `/api/authV2/open/device/:deviceId/settings`       | POST | 更新设备设置     |
 | `/api/authV2/open/device/:deviceId/next`           | POST | 切换到下一个内容 |
 | `/api/authV2/open/device/:deviceId/text`           | POST | 显示文本内容     |
 | `/api/authV2/open/device/:deviceId/image`          | POST | 显示图像内容     |
@@ -134,6 +137,8 @@ ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canva
 - `send_image.py`：向设备发送图像
 - `send_canvas.py`：向设备发送画板 API JSON 布局
 - `get_device_status.py`：获取当前设备状态
+- `get_device_settings.py`：获取设备设置
+- `update_device_settings.py`：更新设备设置
 - `list_devices.py`：列出所有设备
 - `list_tasks.py`：列出设备循环或固定任务
 - `switch_next.py`：切换到下一个内容

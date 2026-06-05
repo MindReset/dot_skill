@@ -69,7 +69,10 @@ ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canva
 | エンドポイント                                     | メソッド | 説明                       |
 | -------------------------------------------------- | -------- | -------------------------- |
 | `/api/authV2/open/devices`                         | GET      | すべてのデバイスを一覧表示 |
+| `/api/authV2/open/timezones`                       | GET      | 対応タイムゾーンを一覧表示 |
 | `/api/authV2/open/device/:deviceId/status`         | GET      | デバイス状態を取得         |
+| `/api/authV2/open/device/:deviceId/settings`       | GET      | デバイス設定を取得         |
+| `/api/authV2/open/device/:deviceId/settings`       | POST     | デバイス設定を更新         |
 | `/api/authV2/open/device/:deviceId/next`           | POST     | 次のコンテンツに切り替え   |
 | `/api/authV2/open/device/:deviceId/text`           | POST     | テキストコンテンツを表示   |
 | `/api/authV2/open/device/:deviceId/image`          | POST     | 画像コンテンツを表示       |
@@ -84,6 +87,8 @@ ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canva
 - `send_image.py`: デバイスに画像を送信
 - `send_canvas.py`: Canvas API の JSON レイアウトをデバイスに送信
 - `get_device_status.py`: 現在のデバイス状態を取得
+- `get_device_settings.py`: デバイス設定を取得
+- `update_device_settings.py`: デバイス設定を更新
 - `list_devices.py`: すべてのデバイスを一覧表示
 - `list_tasks.py`: デバイスのループまたは固定タスクを一覧表示
 - `switch_next.py`: 次のコンテンツに切り替え
