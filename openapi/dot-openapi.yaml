@@ -26,6 +26,7 @@ servers:
   - url: https://dot.mindreset.tech
 security:
   - bearerAuth: []
+  - oauth2: []
 tags:
   - name: Devices
     description: Device discovery, status, and task listing.
@@ -36,6 +37,10 @@ tags:
 paths:
   /api/authV2/open/devices:
     get:
+      security:
+        - bearerAuth: []
+        - oauth2:
+            - dot.devices:read
       operationId: listDevices
       tags:
         - Devices
@@ -56,6 +61,10 @@ paths:
           $ref: "#/components/responses/RateLimited"
   /api/authV2/open/timezones:
     get:
+      security:
+        - bearerAuth: []
+        - oauth2:
+            - dot.devices:read
       operationId: listTimezones
       tags:
         - Settings
@@ -76,6 +85,10 @@ paths:
           $ref: "#/components/responses/RateLimited"
   /api/authV2/open/device/{deviceId}/status:
     get:
+      security:
+        - bearerAuth: []
+        - oauth2:
+            - dot.device.status:read
       operationId: getDeviceStatus
       tags:
         - Devices
@@ -98,6 +111,10 @@ paths:
           $ref: "#/components/responses/RateLimited"
   /api/authV2/open/device/{deviceId}/settings:
     get:
+      security:
+        - bearerAuth: []
+        - oauth2:
+            - dot.device.settings:read
       operationId: getDeviceSettings
       tags:
         - Settings
@@ -119,6 +136,10 @@ paths:
         "429":
           $ref: "#/components/responses/RateLimited"
     post:
+      security:
+        - bearerAuth: []
+        - oauth2:
+            - dot.device.settings:write
       operationId: updateDeviceSettings
       tags:
         - Settings
@@ -147,6 +168,10 @@ paths:
           $ref: "#/components/responses/RateLimited"
   /api/authV2/open/device/{deviceId}/next:
     post:
+      security:
+        - bearerAuth: []
+        - oauth2:
+            - dot.device.content:write
       operationId: switchNextContent
       tags:
         - Content
@@ -165,6 +190,10 @@ paths:
           $ref: "#/components/responses/RateLimited"
   /api/authV2/open/device/{deviceId}/text:
     post:
+      security:
+        - bearerAuth: []
+        - oauth2:
+            - dot.device.content:write
       operationId: displayText
       tags:
         - Content
@@ -191,6 +220,10 @@ paths:
           $ref: "#/components/responses/RateLimited"
   /api/authV2/open/device/{deviceId}/image:
     post:
+      security:
+        - bearerAuth: []
+        - oauth2:
+            - dot.device.content:write
       operationId: displayImage
       tags:
         - Content
@@ -217,6 +250,10 @@ paths:
           $ref: "#/components/responses/RateLimited"
   /api/authV2/open/device/{deviceId}/canvas:
     post:
+      security:
+        - bearerAuth: []
+        - oauth2:
+            - dot.device.content:write
       operationId: displayCanvas
       tags:
         - Content
@@ -243,6 +280,10 @@ paths:
           $ref: "#/components/responses/RateLimited"
   /api/authV2/open/device/{deviceId}/{taskType}/list:
     get:
+      security:
+        - bearerAuth: []
+        - oauth2:
+            - dot.device.tasks:read
       operationId: listDeviceTasks
       tags:
         - Devices
@@ -281,6 +322,20 @@ components:
       scheme: bearer
       bearerFormat: dot_app API key
       description: Dot. API key, for example `dot_app_<your_api_key>`.
+    oauth2:
+      type: oauth2
+      description: Dot. OAuth access token issued by the Dot. OAuth provider.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://dot.mindreset.tech/api/authV2/oauth2/authorize
+          tokenUrl: https://dot.mindreset.tech/api/authV2/oauth2/token
+          scopes:
+            dot.devices:read: List Dot. devices and shared read helpers.
+            dot.device.status:read: Read Dot. device status.
+            dot.device.tasks:read: Read Dot. device task lists.
+            dot.device.settings:read: Read Dot. device settings.
+            dot.device.settings:write: Update Dot. device settings.
+            dot.device.content:write: Push content or switch content on Dot. devices.
   parameters:
     DeviceId:
       name: deviceId
