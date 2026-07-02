@@ -56,7 +56,7 @@ Start a new Codex thread after installation so Codex can load the plugin's skill
 Import the OpenAPI schema:
 
 ```text
-https://raw.githubusercontent.com/MindReset/dot_skill/master/openapi/dot-openapi.yaml
+https://raw.githubusercontent.com/MindReset/dot_skill/main/openapi/dot-openapi.yaml
 ```
 
 Configure Bearer authentication with a Dot. API key:

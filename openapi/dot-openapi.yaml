@@ -16,7 +16,7 @@ info:
     email: security@mindreset.tech
   license:
     name: MIT
-    url: https://github.com/MindReset/dot_skill/blob/master/LICENSE
+    url: https://github.com/MindReset/dot_skill/blob/main/LICENSE
   x-securityPolicyURL: https://dot.mindreset.tech/docs/security_policy
   x-securityContact: security@mindreset.tech
 externalDocs:

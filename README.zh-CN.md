@@ -56,7 +56,7 @@ codex plugin add dot-skill@mindreset-dot-skill
 导入 OpenAPI schema：
 
 ```text
-https://raw.githubusercontent.com/MindReset/dot_skill/master/openapi/dot-openapi.yaml
+https://raw.githubusercontent.com/MindReset/dot_skill/main/openapi/dot-openapi.yaml
 ```
 
 配置 Bearer 认证，使用 Dot. API key：
