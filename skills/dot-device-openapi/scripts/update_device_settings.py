@@ -66,8 +66,16 @@ def main():
     parser.add_argument("--alias", help="Device alias. Use an empty string to clear it")
     parser.add_argument("--location", help="Device location. Use an empty string to clear it")
     parser.add_argument("--timezone", help="Timezone key, for example Asia/Shanghai")
-    parser.add_argument("--power-ms", type=int, help="Power refresh interval in milliseconds")
-    parser.add_argument("--battery-ms", type=int, help="Battery refresh interval in milliseconds")
+    parser.add_argument(
+        "--power-ms",
+        type=int,
+        help="Power refresh interval in milliseconds (60,000-43,200,000)",
+    )
+    parser.add_argument(
+        "--battery-ms",
+        type=int,
+        help="Battery automatic wake and refresh interval in milliseconds (60,000-43,200,000)",
+    )
     parser.add_argument("--sleep-start", help="Sleep start time in HH:mm")
     parser.add_argument("--sleep-end", help="Sleep end time in HH:mm")
     parser.add_argument(

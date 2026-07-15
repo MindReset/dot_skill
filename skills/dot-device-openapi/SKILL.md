@@ -69,7 +69,7 @@ For Image API, parameters include `refreshNow`, `taskKey`, `taskAlias`, `image`,
 
 For Canvas API sending, parameters include `refreshNow`, `taskKey`, `taskAlias`, `data`, `windowData`, `layoutFull`, `link`, and `border`. Build or revise `windowData` with `dot-canvas-designer`.
 
-For device settings, parameters include `alias`, `location`, `timezone`, `interval`, and `sleep`. Timezones must be one of the keys returned by `GET /api/authV2/open/timezones`. `interval.powerMs` must be 60,000-86,400,000 ms and `interval.batteryMs` must be 900,000-43,200,000 ms; both must be whole-minute multiples. `sleep.start` and `sleep.end` use local `HH:mm` time in the device timezone, and an end time earlier than start means the next day.
+For device settings, parameters include `alias`, `location`, `timezone`, `interval`, and `sleep`. Timezones must be one of the keys returned by `GET /api/authV2/open/timezones`. Both `interval.powerMs` and `interval.batteryMs` must be 60,000-43,200,000 ms in whole-minute multiples. The battery interval controls automatic wake and content refresh timing. `sleep.start` and `sleep.end` use local `HH:mm` time in the device timezone, and an end time earlier than start means the next day.
 
 For Text API, Image API, and Canvas API, use top-level `taskAlias` when the user wants a human-readable task-list name. Omit `taskAlias` to keep the existing task name. Send `taskAlias: ""` or `taskAlias: null` only when the user explicitly wants to clear the name. Never put `taskAlias` inside Canvas `data`.
 

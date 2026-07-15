@@ -66,8 +66,8 @@ Use `GET` to read editable settings. Use `POST` to update one or more settings; 
 | `alias` | string \| null | No | Device alias. Send `null` or an empty string to clear it |
 | `location` | string \| null | No | Device location. Send `null` or an empty string to clear it |
 | `timezone` | string | No | Must be a key returned by `GET /api/authV2/open/timezones` |
-| `interval.powerMs` | number | No | Power refresh interval in milliseconds. Must be 60,000-86,400,000 and a multiple of 60,000 |
-| `interval.batteryMs` | number | No | Battery refresh interval in milliseconds. Must be 900,000-43,200,000 and a multiple of 60,000 |
+| `interval.powerMs` | number | No | Power refresh interval in milliseconds. Must be 60,000-43,200,000 and a multiple of 60,000 |
+| `interval.batteryMs` | number | No | Battery automatic wake and refresh interval in milliseconds. Must be 60,000-43,200,000 and a multiple of 60,000 |
 | `sleep.enabled` | boolean | Yes, when `sleep` is sent | Enable or disable sleep |
 | `sleep.start` | string | Yes, when `sleep` is sent | Local `HH:mm` start time in the device timezone |
 | `sleep.end` | string | Yes, when `sleep` is sent | Local `HH:mm` end time in the device timezone. If earlier than start, it means the next day |

@@ -582,15 +582,15 @@ components:
         powerMs:
           type: integer
           minimum: 60000
-          maximum: 86400000
+          maximum: 43200000
           multipleOf: 60000
           description: Refresh interval in milliseconds while connected to power.
         batteryMs:
           type: integer
-          minimum: 900000
+          minimum: 60000
           maximum: 43200000
           multipleOf: 60000
-          description: Refresh interval in milliseconds while using battery power.
+          description: Automatic wake and refresh interval in milliseconds while using battery power.
     DeviceSettingsSleep:
       type: object
       additionalProperties: false
