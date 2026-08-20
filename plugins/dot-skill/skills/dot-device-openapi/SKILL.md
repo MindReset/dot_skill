@@ -3,7 +3,7 @@ name: dot-device-openapi
 description: Interact with Dot. devices through OpenAPI - list devices, check status, switch content, and send Text/Image/Canvas API payloads.
 ---
 
-# Dot Device OpenAPI
+# Dot Device OpenAPI and MCP
 
 Use this skill when the user wants to operate a Dot. device:
 
@@ -17,6 +17,17 @@ Use this skill when the user wants to operate a Dot. device:
 - List loop or fixed tasks on a device
 
 If the user asks to design a custom Canvas card, dashboard, or `windowData` layout, use `dot-canvas-designer` first, then return here only when the user wants to send it to a device.
+
+## Local MCP
+
+Compatible agents can use the local `dot-mcp` stdio server instead of constructing HTTP requests. It exposes only the fixed Dot tools below; it does not expose arbitrary HTTP access:
+
+- Read-only: `dot_list_devices`, `dot_get_device_status`, `dot_get_device_settings`, `dot_list_timezones`, `dot_list_tasks`, `dot_validate_canvas`
+- Device-changing: `dot_update_device_settings`, `dot_switch_next_content`, `dot_send_text`, `dot_send_image`, `dot_send_canvas`
+
+The server reads `DOT_API_KEY` from the MCP process environment. It never accepts the key as a tool argument, stores it, or logs it. Device-changing requests are sent once without automatic retries.
+
+Install the local server with `pipx install git+https://github.com/MindReset/dot_skill.git`, run it with `dot-mcp`, or use `uvx --from git+https://github.com/MindReset/dot_skill.git dot-mcp`. Platform configuration examples are in [`docs/mcp-configs.md`](https://github.com/MindReset/dot_skill/blob/main/docs/mcp-configs.md).
 
 ## Requirements
 

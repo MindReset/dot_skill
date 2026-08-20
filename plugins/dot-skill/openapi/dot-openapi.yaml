@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Dot Skill OpenAPI
-  version: 0.1.4
+  version: 0.2.0
   summary: Control Dot. devices through the Dot. OpenAPI.
   description: |
     Dot Skill exposes OpenAPI operations for listing Dot. devices, checking device status,

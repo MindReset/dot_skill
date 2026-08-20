@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dot-skill"
+version = "0.2.0"
+description = "Dot. device tools, Canvas validation, and a local MCP server"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "MindReset", email = "security@mindreset.tech" },
+]
+dependencies = [
+  "mcp>=1.0.0",
+  "pydantic>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://dot.mindreset.tech/docs/service/open/skill"
+Repository = "https://github.com/MindReset/dot_skill"
+
+[project.scripts]
+dot-mcp = "dot_mcp.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["dot_mcp*"]

@@ -2,7 +2,7 @@
 
 **言語:** [English](./README.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
 
-AI アシスタントが OpenAPI を通じて Dot. デバイスと連携するための Skill です。
+AI アシスタントが Dot. デバイスと連携するための Agent Skill とローカル MCP Server です。
 
 📚 **公式ドキュメント**: [https://dot.mindreset.tech/docs/service/open/skill](https://dot.mindreset.tech/docs/service/open/skill)
 
@@ -63,6 +63,18 @@ ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canva
 1. **API キーの取得**: [公式ドキュメント](https://dot.mindreset.tech/docs/service/open/get_api) を参照
 2. **デバイス ID の取得**: [公式ドキュメント](https://dot.mindreset.tech/docs/service/open/get_device_id) を参照
 3. **API の使用開始**: [Device API Reference](skills/dot-device-openapi/references/api_reference.md) でエンドポイントを確認し、[Canvas windowData Reference](skills/dot-canvas-designer/references/windowdata.md) で Canvas レイアウトを確認
+
+## ローカル MCP
+
+ローカル stdio MCP Server を `pipx` または `uvx` で実行できます。API キーは MCP プロセスの `DOT_API_KEY` 環境変数から読み取られます。
+
+```bash
+pipx install git+https://github.com/MindReset/dot_skill.git
+export DOT_API_KEY="dot_app_<your_api_key>"
+dot-mcp
+```
+
+Claude Code、CodeBuddy、Cursor、VS Code、Kimi Code、Hermes、OpenCode、Gemini CLI、Goose、Trae、MiniMax Code、DeepSeek Harness の設定例は [MCP configuration](docs/mcp-configs.md) を参照してください。Remote MCP はこのリリースには含まれていません。
 
 ## API 概要
 

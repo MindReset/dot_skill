@@ -9,7 +9,8 @@ released.
 ## Credential Handling
 
 Dot Skill helper scripts read the Dot. API key from the local `DOT_API_KEY` environment variable.
-The plugin and scripts do not store API keys, device IDs, or request history.
+The local MCP server uses the same environment variable. The plugin, server, and scripts do not
+store API keys, device IDs, or request history.
 
 Requests are sent to the Dot. OpenAPI service at:
 
@@ -23,6 +24,8 @@ https://dot.mindreset.tech
 - Rotate your Dot. API key if it may have been exposed.
 - Use separate API keys for development, demos, and production workflows when possible.
 - Review generated Canvas, text, image, and link payloads before sending them to a real device.
+- Keep the MCP process environment private. Do not pass `DOT_API_KEY` as a tool argument or place it
+  in an MCP configuration file.
 
 ## Reporting a Vulnerability
 

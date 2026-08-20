@@ -1,0 +1,13 @@
+{
+  "servers": {
+    "dot-skill": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/MindReset/dot_skill.git",
+        "dot-mcp"
+      ]
+    }
+  }
+}

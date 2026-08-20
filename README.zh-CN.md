@@ -7,7 +7,7 @@
 ![MCP Ready](https://img.shields.io/badge/MCP-ready-blueviolet)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
 
-用于 AI 助手通过 OpenAPI 与 Dot. 设备交互的 Skill。
+用于 AI 助手与 Dot. 设备交互的跨平台 Agent Skill 和本地 MCP Server。
 
 📚 **官方文档**: [https://dot.mindreset.tech/docs/service/open/skill](https://dot.mindreset.tech/docs/service/open/skill)
 
@@ -26,12 +26,13 @@ Dot Skill 允许您：
 - `dot-device-openapi`：设备交互、API 调用和辅助脚本
 - `dot-canvas-designer`：Canvas API `windowData` 设计和布局规则
 - `dot-openapi`：旧安装兼容入口
+- `dot_mcp`：共享 Python 客户端、Canvas 校验器和本地 stdio MCP Server
 
 ## 前提条件
 
 - 拥有一个 Dot. 账号和至少一台设备
 - 从 Dot. App 获取 API 密钥
-- 本地已安装 `python3`（用于使用辅助脚本）
+- 本地已安装 Python 3.10+（用于辅助脚本或 MCP Server）
 
 ## 安装
 
@@ -69,6 +70,26 @@ Authorization: Bearer dot_app_<your_api_key>
 
 - 隐私政策：[https://dot.mindreset.tech/docs/privacy](https://dot.mindreset.tech/docs/privacy)
 - 用户协议：[https://dot.mindreset.tech/docs/terms](https://dot.mindreset.tech/docs/terms)
+
+### 用于支持 MCP 的 agent
+
+仓库提供一个仅使用本地 stdio 的 MCP Server，包含固定的 Dot 工具。可以使用 `pipx` 安装，或使用 `uvx` 按需运行：
+
+```bash
+pipx install git+https://github.com/MindReset/dot_skill.git
+```
+
+```bash
+uvx --from git+https://github.com/MindReset/dot_skill.git dot-mcp
+```
+
+在启动 agent 的同一环境中设置 API 密钥：
+
+```bash
+export DOT_API_KEY="dot_app_<your_api_key>"
+```
+
+Claude Code、CodeBuddy、Cursor、VS Code、Kimi Code、Hermes、OpenCode、Gemini CLI、Goose、Trae、MiniMax Code 和 DeepSeek Harness 的配置示例见 [`docs/mcp-configs.md`](docs/mcp-configs.md)。本版本不提供 Remote MCP。
 
 ### 使用 `npx skills add` 安装（推荐）
 
@@ -110,9 +131,10 @@ ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canva
 | --- | --- | --- |
 | Codex | 已支持 | 使用 `.agents/plugins/marketplace.json` 作为仓库 marketplace |
 | OpenAI GPT Actions | 通过 schema 支持 | 导入 `openapi/dot-openapi.yaml` 并配置 Bearer 认证 |
-| Claude / MCP clients | 计划中 | 目前可先使用 OpenAPI schema，后续可补 remote MCP server |
-| Cursor 和兼容 skill 的 agent | 已支持为 skill 文档 | 安装 `skills/dot-device-openapi` 和/或 `skills/dot-canvas-designer`，或将本仓库作为上下文 |
-| MCP Registry | 计划中 | 等 Dot MCP server 存在后发布 server metadata |
+| Claude Code、CodeBuddy、Cursor、VS Code、Kimi Code | 实验性 | 使用 canonical skills 和本地 stdio MCP 配置 |
+| Hermes、OpenCode、Gemini CLI、Goose | 实验性 | 将 `dot-mcp` 注册为本地 stdio Server |
+| Trae、MiniMax Code、DeepSeek Harness | 实验性 | 采用 MCP-first，按 `docs/mcp-configs.md` 配置 |
+| Remote MCP 和 MCP Registry | 计划中 | 尚未确定发布时间 |
 
 ## API 概览
 
@@ -143,6 +165,8 @@ ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canva
 - `list_tasks.py`：列出设备循环或固定任务
 - `switch_next.py`：切换到下一个内容
 
+所有辅助脚本都使用共享的 `dot_mcp` 客户端和 Canvas 校验器。发布前运行 `python scripts/sync_bundle.py --check`，检查 portable plugin bundle 是否发生漂移。
+
 文本、图像和画板辅助脚本都支持 `--task-alias`，用于设置设备任务列表中显示的可读任务名称。
 
 ## 资源
@@ -152,6 +176,8 @@ ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canva
 - [Canvas 示例](skills/dot-canvas-designer/references/examples.md) - 画板 payload 示例
 - [认证指南](skills/dot-device-openapi/references/authentication.md) - 如何认证请求
 - [OpenAPI Schema](openapi/dot-openapi.yaml) - 可导入 Actions 和兼容 OpenAPI 的工具
+- [Agent 支持](docs/agent-support.md) - 平台状态和安装方式
+- [MCP 配置](docs/mcp-configs.md) - 本地 stdio 配置示例
 - [安全政策](SECURITY.md) - 密钥处理和漏洞报告
 - [Dot. 官方安全政策](https://dot.mindreset.tech/docs/security_policy) - 负责任披露流程
 - [支持说明](SUPPORT.md) - Issue 提交指南
@@ -165,6 +191,9 @@ ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canva
 - `skills/dot-device-openapi`，设备交互脚本和接口说明
 - `skills/dot-canvas-designer`，Canvas API payload 设计规则
 - `plugins/dot-skill`，Codex plugin 打包内容
+- `dot_mcp` 和 `pyproject.toml`，本地 MCP runtime
+- `plugin.json`、`mcp.json`、`.claude-plugin` 和 `.codebuddy-plugin`，portable plugin 元数据
+- `scripts/sync_bundle.py`，同步 canonical skills、OpenAPI 和 plugin bundle
 - `dot_web_docs` 中的 Dot Web 公开文档
 
 仅内部使用的 Studio V2 实现、MongoDB 迁移和渲染排障流程应放在 `dot_internal_skill`，不要写入这个公开 package。

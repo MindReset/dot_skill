@@ -7,7 +7,7 @@
 ![MCP Ready](https://img.shields.io/badge/MCP-ready-blueviolet)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
 
-A skill for AI agents to interact with Dot. devices through the OpenAPI.
+A portable Agent Skill and local MCP server for AI agents to interact with Dot. devices.
 
 📚 **Official Documentation**: [https://dot.mindreset.tech/docs/service/open/skill](https://dot.mindreset.tech/docs/service/open/skill)
 
@@ -26,12 +26,13 @@ The repository now splits responsibilities into:
 - `dot-device-openapi`: device interaction, API calls, and helper scripts
 - `dot-canvas-designer`: Canvas API `windowData` design and layout guidance
 - `dot-openapi`: compatibility router for older installs
+- `dot_mcp`: shared Python client, Canvas validator, and local stdio MCP server
 
 ## Prerequisites
 
 - A Dot. account with at least one device
 - An API key from the Dot. App
-- `python3` installed locally (for using the helper scripts)
+- Python 3.10+ installed locally (for the helper scripts or MCP server)
 
 ## Installation
 
@@ -69,6 +70,26 @@ Public GPTs or agents that call Dot. APIs should include the Dot. privacy policy
 
 - Privacy Policy: [https://dot.mindreset.tech/docs/privacy](https://dot.mindreset.tech/docs/privacy)
 - Terms of Service: [https://dot.mindreset.tech/docs/terms](https://dot.mindreset.tech/docs/terms)
+
+### Use with MCP-compatible agents
+
+The repository includes a local stdio MCP server with fixed Dot tools. Install it with `pipx` or run it on demand with `uvx`:
+
+```bash
+pipx install git+https://github.com/MindReset/dot_skill.git
+```
+
+```bash
+uvx --from git+https://github.com/MindReset/dot_skill.git dot-mcp
+```
+
+Set the key in the environment of the agent process:
+
+```bash
+export DOT_API_KEY="dot_app_<your_api_key>"
+```
+
+Use [`docs/mcp-configs.md`](docs/mcp-configs.md) for Claude Code, CodeBuddy, Cursor, VS Code, Kimi Code, Hermes, OpenCode, Gemini CLI, Goose, Trae, MiniMax Code, and DeepSeek Harness configuration examples. Remote MCP is not included.
 
 ### Install with `npx skills add` (Recommended)
 
@@ -110,9 +131,10 @@ Restart your agent after installation.
 | --- | --- | --- |
 | Codex | Supported | Repository marketplace at `.agents/plugins/marketplace.json` |
 | OpenAI GPT Actions | Supported via schema | Import `openapi/dot-openapi.yaml` and configure Bearer auth |
-| Claude / MCP clients | Planned | Use the OpenAPI schema today; a remote MCP server can be added later |
-| Cursor and skill-compatible agents | Supported as skill docs | Install `skills/dot-device-openapi` and/or `skills/dot-canvas-designer`, or read this repository as context |
-| MCP Registry | Planned | Publish server metadata after a Dot MCP server exists |
+| Claude Code, CodeBuddy, Cursor, VS Code, Kimi Code | Experimental | Use the canonical skills and the local stdio MCP configuration |
+| Hermes, OpenCode, Gemini CLI, Goose | Experimental | Register `dot-mcp` as a local stdio server |
+| Trae, MiniMax Code, DeepSeek Harness | Experimental | MCP-first; use the platform-specific notes in `docs/mcp-configs.md` |
+| Remote MCP and MCP Registry | Planned | No release window is confirmed |
 
 ## API Overview
 
@@ -143,6 +165,8 @@ The `skills/dot-device-openapi/scripts/` directory contains Python helper script
 - `list_tasks.py`: List device loop or fixed tasks
 - `switch_next.py`: Switch to the next content
 
+All helper scripts use the shared `dot_mcp` client and Canvas validator. Run `python scripts/sync_bundle.py --check` before publishing to detect drift in the portable plugin bundle.
+
 Text, image, and Canvas helper scripts support `--task-alias` to set the human-readable task name shown in the device task list.
 
 ## Resources
@@ -152,6 +176,8 @@ Text, image, and Canvas helper scripts support `--task-alias` to set the human-r
 - [Canvas Examples](skills/dot-canvas-designer/references/examples.md) - Example Canvas payloads
 - [Authentication](skills/dot-device-openapi/references/authentication.md) - How to authenticate requests
 - [OpenAPI Schema](openapi/dot-openapi.yaml) - Importable schema for Actions and OpenAPI-compatible tools
+- [Agent support](docs/agent-support.md) - Platform status and installation routes
+- [MCP configuration](docs/mcp-configs.md) - Local stdio configuration examples
 - [Security Policy](SECURITY.md) - Credential handling and vulnerability reporting
 - [Official Dot. Security Policy](https://dot.mindreset.tech/docs/security_policy) - Responsible disclosure process
 - [Support](SUPPORT.md) - Issue reporting guidance
@@ -165,6 +191,9 @@ This repository is the public, user-facing skill package for Dot. device control
 - `skills/dot-device-openapi` for device interaction scripts and endpoint guidance
 - `skills/dot-canvas-designer` for Canvas API payload design rules
 - `plugins/dot-skill` for Codex plugin packaging
+- `dot_mcp` and `pyproject.toml` for the local MCP runtime
+- `plugin.json`, `mcp.json`, `.claude-plugin`, and `.codebuddy-plugin` for portable plugin metadata
+- `scripts/sync_bundle.py` to keep the plugin bundle aligned with canonical skills and OpenAPI content
 - Dot Web public docs under `dot_web_docs`
 
 Internal-only Studio V2 implementation, MongoDB migration, and render-debugging workflows belong in `dot_internal_skill`, not this public package.

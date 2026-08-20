@@ -1,0 +1,14 @@
+{
+  "name": "dot-skill",
+  "version": "0.2.0",
+  "description": "Control Dot. devices and design Canvas API layouts from Claude Code.",
+  "author": {
+    "name": "MindReset",
+    "email": "security@mindreset.tech",
+    "url": "https://github.com/MindReset"
+  },
+  "homepage": "https://dot.mindreset.tech/docs/service/open/skill",
+  "repository": "https://github.com/MindReset/dot_skill",
+  "license": "MIT",
+  "keywords": ["dot", "mindreset", "device-control", "canvas-api", "mcp"]
+}

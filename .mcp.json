@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "dot-skill": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/MindReset/dot_skill.git",
+        "dot-mcp"
+      ]
+    }
+  }
+}

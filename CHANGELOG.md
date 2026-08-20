@@ -2,6 +2,15 @@
 
 All notable changes to Dot Skill will be documented in this file.
 
+## 0.2.0 - 2026-08-20
+
+- Added the shared `dot_mcp` Python runtime with one Dot. client and Canvas validator.
+- Added the local `dot-mcp` stdio MCP server with fixed read and write tools.
+- Updated helper scripts to use the shared client and validator without automatic write retries.
+- Added portable Agent Plugin, Claude Code, and CodeBuddy metadata with MCP configuration templates.
+- Added platform status, MCP setup, and bundle synchronization documentation.
+- Added a synchronization check for canonical skills, OpenAPI content, and the Codex bundle.
+
 ## 0.1.4 - 2026-06-04
 
 - Added official Dot. responsible disclosure policy references.

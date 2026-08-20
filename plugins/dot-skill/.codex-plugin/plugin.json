@@ -1,7 +1,7 @@
 {
   "name": "dot-skill",
-  "version": "0.1.4",
-  "description": "Control Dot. devices and design Canvas API layouts from Codex.",
+  "version": "0.2.0",
+  "description": "Control Dot. devices and design Canvas API layouts from Codex and local MCP tools.",
   "author": {
     "name": "MindReset",
     "email": "security@mindreset.tech",
@@ -25,7 +25,7 @@
   "interface": {
     "displayName": "Dot Skill",
     "shortDescription": "Control Dot. devices and design Canvas layouts.",
-    "longDescription": "Dot Skill gives Codex focused guidance for Dot. workflows split into two skills: dot-device-openapi for listing devices, checking status, switching content, and sending Text/Image/Canvas API payloads; and dot-canvas-designer for designing Canvas API windowData layouts, styles, list rendering, conditions, and display formatting. API keys are read from the local DOT_API_KEY environment variable and are not stored in the plugin.",
+    "longDescription": "Dot Skill gives Codex focused guidance for Dot. workflows split into two skills: dot-device-openapi for listing devices, checking status, switching content, and sending Text/Image/Canvas API payloads; and dot-canvas-designer for designing Canvas API windowData layouts, styles, list rendering, conditions, and display formatting. A local stdio MCP server exposes the same fixed operations to compatible agents. API keys are read from the local DOT_API_KEY environment variable and are not stored in the plugin.",
     "developerName": "MindReset",
     "category": "Productivity",
     "capabilities": [
