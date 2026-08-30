@@ -2,10 +2,12 @@
 
 **语言:** [English](./README.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
 
-![Codex Plugin](https://img.shields.io/badge/Codex-Plugin-black)
-![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-blue)
-![MCP Ready](https://img.shields.io/badge/MCP-ready-blueviolet)
-![License: MIT](https://img.shields.io/badge/License-MIT-green)
+![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-6B46C1?style=for-the-badge)
+![Codex Skill](https://img.shields.io/badge/Codex-Skill-111827?style=for-the-badge)
+![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![OpenAPI 3.1](https://img.shields.io/badge/OpenAPI-3.1-2563EB?style=for-the-badge)
+![MCP Ready](https://img.shields.io/badge/MCP-Ready-7C3AED?style=for-the-badge)
+![License: MIT](https://img.shields.io/badge/License-MIT-16A34A?style=for-the-badge)
 
 用于 AI 助手与 Dot. 设备交互的跨平台 Agent Skill 和本地 MCP Server。
 
