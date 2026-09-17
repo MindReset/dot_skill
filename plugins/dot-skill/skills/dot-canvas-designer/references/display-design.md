@@ -4,7 +4,7 @@ Design a glanceable physical display, not a scaled-down web page. Reuse a workin
 
 ## Confirm the display profile
 
-Record the actual model, usable width and height, orientation, palette, frame, and refresh behavior before choosing geometry. The Quote/0 public Canvas baseline is 296 × 152; it is not a universal canvas. See the [product and integration guide](https://github.com/MindReset/dot_skill/blob/main/skills/dot-device-openapi/references/products.md) for Rand/0 and Read/0 routes.
+Record the actual model, usable width and height, orientation, palette, frame, and refresh behavior before choosing geometry. The Quote/0 public Canvas baseline is 296 × 152; it is not a universal canvas. See the [product and integration guide](https://github.com/MindReset/dot_skill/blob/main/skills/dot-device-openapi/references/products.md) for Rand/0 and Read Pico routes.
 
 A panel's native grayscale does not prove that a particular transport or refresh mode preserves those levels. Check the final output path. Do not invent device selectors or send Canvas JSON to a firmware or image-frame interface.
 

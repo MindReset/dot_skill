@@ -22,7 +22,7 @@ When the user asks to design and send a Canvas card:
 
 Before writing a layout, read [content-design.md](references/content-design.md) to establish the primary fact, actual data, target, language, and state behavior. Read [display-design.md](references/display-design.md) for hierarchy, typography, image treatment, and small-screen composition. These decisions guide the public Canvas payload; they are not additional payload fields.
 
-For Pico / Read/0 or Rand/0 requests, first consult the [product and integration guide](https://github.com/MindReset/dot_skill/blob/main/skills/dot-device-openapi/references/products.md). General design principles transfer across devices, but Canvas delivery support must be established separately.
+For Read Pico or Rand/0 requests, first consult the [product and integration guide](https://github.com/MindReset/dot_skill/blob/main/skills/dot-device-openapi/references/products.md). General design principles transfer across devices, but Canvas delivery support must be established separately.
 
 ## Composition Model
 

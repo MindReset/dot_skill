@@ -36,7 +36,7 @@ The repository now splits responsibilities into:
 
 | Product | Start here |
 | --- | --- |
-| Read/0 (Pico in Chinese) | [Product docs](https://dot.mindreset.tech/docs/read_0), [hardware resource entry](https://github.com/MindReset/dot_open_platform/tree/main/devices/read_0), [official demo firmware](https://github.com/MindReset/read_pico_firmware) |
+| Read Pico | [Product docs](https://dot.mindreset.tech/docs/read_0), [hardware resource entry](https://github.com/MindReset/dot_open_platform/tree/main/devices/read_0), [official demo firmware](https://github.com/MindReset/read_pico_firmware) |
 | Rand/0 (口袋先知) | [Product docs](https://dot.mindreset.tech/docs/rand_0), [local Display Mode and browser example](https://github.com/MindReset/dot_open_platform/tree/main/capabilities/rand_0_display_mode) |
 
 See the [product guide](skills/dot-device-openapi/references/products.md) for hardware summaries and integration boundaries. These product resources do not imply Dot cloud API support. The account and API-key prerequisites below apply to cloud device operations, not reading hardware references or designing content.

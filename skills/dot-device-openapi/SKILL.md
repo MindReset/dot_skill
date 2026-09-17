@@ -20,7 +20,7 @@ If the user asks to design a custom Canvas card, dashboard, or `windowData` layo
 
 ## Product Routing
 
-Read [products.md](references/products.md) before choosing an integration for Pico / Read/0 or Rand/0, or when the user asks for hardware resources. Read/0 development uses its official firmware repository; Rand/0 Display Mode uses a local image protocol. Do not request Dot cloud credentials or use the sending scripts for those routes. The requirements below apply to supported Dot cloud API devices.
+Read [products.md](references/products.md) before choosing an integration for Read Pico or Rand/0, or when the user asks for hardware resources. Read Pico development uses its official firmware repository; Rand/0 Display Mode uses a local image protocol. Do not request Dot cloud credentials or use the sending scripts for those routes. The requirements below apply to supported Dot cloud API devices.
 
 ## Local MCP
 

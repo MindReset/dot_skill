@@ -7,7 +7,7 @@ description: Compatibility router for Dot. OpenAPI work. Prefer dot-device-opena
 
 This skill remains for backward compatibility with older installs that reference `dot-openapi`.
 
-For Pico / Read/0 or Rand/0, consult the [product and integration guide](https://github.com/MindReset/dot_skill/blob/main/skills/dot-device-openapi/references/products.md) before choosing a delivery route. Their firmware and local display workflows do not inherit cloud API support.
+For Read Pico or Rand/0, consult the [product and integration guide](https://github.com/MindReset/dot_skill/blob/main/skills/dot-device-openapi/references/products.md) before choosing a delivery route. Their firmware and local display workflows do not inherit cloud API support.
 
 Prefer the split skills:
 
