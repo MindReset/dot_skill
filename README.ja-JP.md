@@ -2,6 +2,8 @@
 
 **言語:** [English](./README.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
 
+[貢献ガイド](CONTRIBUTING.md) | [サポート](SUPPORT.md) | [セキュリティ](SECURITY.md)
+
 ![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-6B46C1?style=for-the-badge)
 ![Codex Skill](https://img.shields.io/badge/Codex-Skill-111827?style=for-the-badge)
 ![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)
@@ -28,6 +30,17 @@ Dot Skill を使用すると、以下のことができます：
 - `dot-device-openapi`: デバイス操作、API 呼び出し、ヘルパースクリプト
 - `dot-canvas-designer`: Canvas API `windowData` の設計とレイアウトガイド
 - `dot-openapi`: 古いインストール向けの互換入口
+
+## 製品資料と画面デザイン
+
+| 製品 | 入口 |
+| --- | --- |
+| Read/0 | [製品ドキュメント](https://dot.mindreset.tech/docs/read_0)、[ハードウェア資料](https://github.com/MindReset/dot_open_platform/tree/main/devices/read_0)、[公式サンプルファームウェア](https://github.com/MindReset/read_pico_firmware) |
+| Rand/0 | [製品ドキュメント](https://dot.mindreset.tech/docs/rand_0)、[ローカル表示モードとブラウザーサンプル](https://github.com/MindReset/dot_open_platform/tree/main/capabilities/rand_0_display_mode) |
+
+[製品ガイド](skills/dot-device-openapi/references/products.md)にハードウェアと接続方法をまとめています。Read/0 のファームウェア開発と Rand/0 のローカル表示モードは、Dot クラウド API の対応を意味しません。以下のアカウントと API キーの条件はクラウド操作向けで、資料の閲覧やコンテンツ設計には不要です。
+
+Canvas デザインスキルには[コンテンツ設計](skills/dot-canvas-designer/references/content-design.md)と[電子ペーパーのレイアウト](skills/dot-canvas-designer/references/display-design.md)を追加しています。情報の優先順位、文字、画像、多言語、空データや古いデータの表示を扱います。
 
 ## 前提条件
 

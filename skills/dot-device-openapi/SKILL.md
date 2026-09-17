@@ -18,6 +18,10 @@ Use this skill when the user wants to operate a Dot. device:
 
 If the user asks to design a custom Canvas card, dashboard, or `windowData` layout, use `dot-canvas-designer` first, then return here only when the user wants to send it to a device.
 
+## Product Routing
+
+Read [products.md](references/products.md) before choosing an integration for Pico / Read/0 or Rand/0, or when the user asks for hardware resources. Read/0 development uses its official firmware repository; Rand/0 Display Mode uses a local image protocol. Do not request Dot cloud credentials or use the sending scripts for those routes. The requirements below apply to supported Dot cloud API devices.
+
 ## Local MCP
 
 Compatible agents can use the local `dot-mcp` stdio server instead of constructing HTTP requests. It exposes only the fixed Dot tools below; it does not expose arbitrary HTTP access:

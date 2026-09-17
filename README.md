@@ -2,6 +2,8 @@
 
 **Languages:** [English](./README.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
 
+[Contribution guide](CONTRIBUTING.md) | [Support](SUPPORT.md) | [Security](SECURITY.md)
+
 ![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-6B46C1?style=for-the-badge)
 ![Codex Skill](https://img.shields.io/badge/Codex-Skill-111827?style=for-the-badge)
 ![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)
@@ -29,6 +31,17 @@ The repository now splits responsibilities into:
 - `dot-canvas-designer`: Canvas API `windowData` design and layout guidance
 - `dot-openapi`: compatibility router for older installs
 - `dot_mcp`: shared Python client, Canvas validator, and local stdio MCP server
+
+## Products and display design
+
+| Product | Start here |
+| --- | --- |
+| Read/0 (Pico in Chinese) | [Product docs](https://dot.mindreset.tech/docs/read_0), [hardware resource entry](https://github.com/MindReset/dot_open_platform/tree/main/devices/read_0), [official demo firmware](https://github.com/MindReset/read_pico_firmware) |
+| Rand/0 (口袋先知) | [Product docs](https://dot.mindreset.tech/docs/rand_0), [local Display Mode and browser example](https://github.com/MindReset/dot_open_platform/tree/main/capabilities/rand_0_display_mode) |
+
+See the [product guide](skills/dot-device-openapi/references/products.md) for hardware summaries and integration boundaries. These product resources do not imply Dot cloud API support. The account and API-key prerequisites below apply to cloud device operations, not reading hardware references or designing content.
+
+The Canvas designer includes [content planning](skills/dot-canvas-designer/references/content-design.md) and [e-paper layout guidance](skills/dot-canvas-designer/references/display-design.md): information hierarchy, typography, image treatment, localization, and empty or stale states.
 
 ## Prerequisites
 

@@ -18,6 +18,12 @@ When the user asks to design and send a Canvas card:
 1. Use this skill to build the Canvas payload.
 2. Use `dot-device-openapi` to send it.
 
+## Design Workflow
+
+Before writing a layout, read [content-design.md](references/content-design.md) to establish the primary fact, actual data, target, language, and state behavior. Read [display-design.md](references/display-design.md) for hierarchy, typography, image treatment, and small-screen composition. These decisions guide the public Canvas payload; they are not additional payload fields.
+
+For Pico / Read/0 or Rand/0 requests, first consult the [product and integration guide](https://github.com/MindReset/dot_skill/blob/main/skills/dot-device-openapi/references/products.md). General design principles transfer across devices, but Canvas delivery support must be established separately.
+
 ## Composition Model
 
 Build `windowData` as JSON, not JSX, JavaScript, raw HTML, external CSS, or an image.
@@ -65,12 +71,15 @@ Avoid internal cleaning or transformation helpers such as `imageSrc`, `stripHtml
 ## Layout Guidance
 
 - Prefer one bounded root container with `flex`, `w-full`, `h-full`, and explicit background/text colors.
-- Use `min-w-0`, `min-h-0`, fixed heights, `overflow-hidden`, `lineClamp`, `textOverflow`, and `whiteSpace` when text could overflow.
+- Use fixed slots and supported text clipping for a deliberate reading budget. Add `min-w-0`, `min-h-0`, or `overflow-hidden` only for a concrete shrink, truncation, or crop requirement; omit defensive styles that do not change the intended result.
 - The outermost Canvas element usually should not add padding; device layout spacing comes from `layoutFull`.
 - Use `layoutFull.tw` or `layoutFull.style` for full-bleed rendering, background, or padding overrides.
 - Keep element count and nesting low. Compose clear sections instead of deeply nested decoration.
 
 ## References
+
+- `references/content-design.md`
+- `references/display-design.md`
 
 - `references/windowdata.md`
 - `references/examples.md`

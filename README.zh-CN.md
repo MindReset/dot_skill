@@ -2,6 +2,8 @@
 
 **语言:** [English](./README.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
 
+[贡献指南](CONTRIBUTING.md) | [获取帮助](SUPPORT.md) | [安全报告](SECURITY.md)
+
 ![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-6B46C1?style=for-the-badge)
 ![Codex Skill](https://img.shields.io/badge/Codex-Skill-111827?style=for-the-badge)
 ![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)
@@ -29,6 +31,17 @@ Dot Skill 允许您：
 - `dot-canvas-designer`：Canvas API `windowData` 设计和布局规则
 - `dot-openapi`：旧安装兼容入口
 - `dot_mcp`：共享 Python 客户端、Canvas 校验器和本地 stdio MCP Server
+
+## 产品资料与屏幕设计
+
+| 产品 | 入口 |
+| --- | --- |
+| Pico | [产品文档](https://dot.mindreset.tech/docs/read_0)、[硬件资源入口](https://github.com/MindReset/dot_open_platform/tree/main/devices/read_0)、[官方示例固件](https://github.com/MindReset/read_pico_firmware) |
+| 口袋先知 Rand/0 | [产品文档](https://dot.mindreset.tech/docs/rand_0)、[局域网显示模式与浏览器示例](https://github.com/MindReset/dot_open_platform/tree/main/capabilities/rand_0_display_mode) |
+
+[产品指南](skills/dot-device-openapi/references/products.md)简要介绍硬件与接入方式。Pico 使用固件开发路径，口袋先知显示模式使用本地连接，不能据此推定它们支持 Dot 云端 API。下方账号与 API Key 要求适用于云端设备操作，阅读硬件资料与设计内容不需要这些凭据。
+
+Canvas 设计技能新增[内容规划](skills/dot-canvas-designer/references/content-design.md)与[墨水屏布局指导](skills/dot-canvas-designer/references/display-design.md)，涵盖信息层级、字体、图片处理、多语言及空数据、过期数据等状态。
 
 ## 前提条件
 

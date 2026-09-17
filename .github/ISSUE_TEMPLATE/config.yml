@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Product and account support
+    url: https://dot.mindreset.tech/docs/contact
+    about: Get help with devices, accounts, purchases, or the Dot App.
+  - name: Private security report
+    url: https://dot.mindreset.tech/docs/security_policy
+    about: Report vulnerabilities or exposed credentials privately.
