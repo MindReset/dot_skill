@@ -22,6 +22,7 @@ def send_image(
     refresh_now=True,
     task_key=None,
     task_alias=None,
+    task_type=None,
 ):
     data = {
         "refreshNow": refresh_now,
@@ -33,6 +34,7 @@ def send_image(
     for key, value in {
         "link": link,
         "taskKey": task_key,
+        "taskType": task_type,
         "taskAlias": task_alias,
     }.items():
         if value is not None:
@@ -62,6 +64,7 @@ def main():
     parser.add_argument("--refresh-now", action="store_true", default=True)
     parser.add_argument("--no-refresh-now", action="store_false", dest="refresh_now")
     parser.add_argument("--task-key")
+    parser.add_argument("--task-type", choices=["loop", "fixed"], help="Target list; omitted defaults to loop. Fixed content waits for its next scheduled refresh.")
     parser.add_argument("--task-alias")
     args = parser.parse_args()
     run(
@@ -75,6 +78,7 @@ def main():
             refresh_now=args.refresh_now,
             task_key=args.task_key,
             task_alias=args.task_alias,
+            task_type=args.task_type,
         )
     )
 

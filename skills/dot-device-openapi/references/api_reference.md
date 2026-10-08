@@ -29,11 +29,26 @@ Text API, Image API, and Canvas API support:
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `refreshNow` | boolean | No | Display immediately. Defaults to `true` |
-| `taskKey` | string | No | Task identifier when a device has multiple API items |
+| `taskType` | string | No | Target list: `loop` or `fixed`. Defaults to `loop` |
+| `refreshNow` | boolean | No | Refresh loop content immediately. Defaults to `true`; ignored for fixed content |
+| `taskKey` | string | No | Matching API item key within the selected list; omitted selects its first matching API item |
 | `taskAlias` | string \| number | No | Human-readable task name shown in the device task list |
 
 Omit `taskAlias` to keep the existing task name. Send `taskAlias: ""` or `taskAlias: null` only when intentionally clearing the name.
+
+The matching API item must already exist in the selected list. A `taskKey` from the other list does not match. List fixed items with `GET /api/authV2/open/device/:deviceId/fixed/list` before sending `taskType: "fixed"`.
+
+Fixed updates preserve the configured days, times, and duration. They appear at the next scheduled refresh, even if the item is currently displayed or `refreshNow` is `true`.
+
+```json
+{
+  "taskType": "fixed",
+  "taskKey": "<fixed_text_api_task_key>",
+  "message": "Your evening summary"
+}
+```
+
+The sending scripts accept `--task-type fixed` for all three APIs. For Canvas `--payload`, an omitted flag preserves the file's `taskType`; an explicit flag overrides it. When `taskType` is absent from both the file and command, the API defaults to `loop`.
 
 ## Device Settings
 
@@ -88,7 +103,7 @@ Returns supported timezone keys, localized names, and current UTC offsets. Devic
 POST /api/authV2/open/device/:deviceId/text
 ```
 
-Before calling this endpoint, the device should already have a Text API content item in its loop task.
+Before calling this endpoint, add a Text API content item to the selected loop or fixed list in Dot. App Content Studio.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -107,7 +122,7 @@ Before calling this endpoint, the device should already have a Text API content 
 POST /api/authV2/open/device/:deviceId/image
 ```
 
-Before calling this endpoint, the device should already have an Image API content item in its loop task.
+Before calling this endpoint, add an Image API content item to the selected loop or fixed list in Dot. App Content Studio.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -123,7 +138,7 @@ Before calling this endpoint, the device should already have an Image API conten
 POST /api/authV2/open/device/:deviceId/canvas
 ```
 
-Before calling this endpoint, the device should already have a Canvas API content item in its loop task.
+Before calling this endpoint, add a Canvas API content item to the selected loop or fixed list in Dot. App Content Studio. Set the target list with top-level `taskType`, outside `data`.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |

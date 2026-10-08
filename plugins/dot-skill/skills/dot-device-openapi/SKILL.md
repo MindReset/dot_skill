@@ -46,7 +46,7 @@ Successful POST control endpoints (`next`, `text`, `image`, `canvas`) return a J
 ## Workflow
 
 1. Confirm a valid API key and device ID.
-2. For Text API, Image API, or Canvas API writes, ensure the matching content has already been added to the device loop task in Dot. App Content Studio.
+2. For Text API, Image API, or Canvas API writes, ensure the matching content has already been added to the selected loop or fixed list in Dot. App Content Studio. Use `taskType: "fixed"` for fixed content; omitting `taskType` selects the loop list. List that same list to find `taskKey`.
 3. Pick the endpoint:
    - Text display: `POST /api/authV2/open/device/:deviceId/text`
    - Image display: `POST /api/authV2/open/device/:deviceId/image`
@@ -76,13 +76,17 @@ Use the scripts in `scripts/` for local execution:
 
 Text, image, and Canvas helper scripts support `--task-alias` for the user-readable task name shown in the device task list.
 
+Use `--task-type fixed` to update fixed content. With Canvas `--payload`, omitting `--task-type` preserves the file's `taskType`; an explicit flag overrides it. If neither provides `taskType`, the API defaults to `loop`.
+
 ## Request Notes
 
-For Text API, parameters include `refreshNow`, `taskKey`, `taskAlias`, `title`, `message`, `signature`, `icon`, `link`, and `styles`.
+For Text API, parameters include `taskType`, `refreshNow`, `taskKey`, `taskAlias`, `title`, `message`, `signature`, `icon`, `link`, and `styles`.
 
-For Image API, parameters include `refreshNow`, `taskKey`, `taskAlias`, `image`, `link`, `border`, `ditherType`, and `ditherKernel`.
+For Image API, parameters include `taskType`, `refreshNow`, `taskKey`, `taskAlias`, `image`, `link`, `border`, `ditherType`, and `ditherKernel`.
 
-For Canvas API sending, parameters include `refreshNow`, `taskKey`, `taskAlias`, `data`, `windowData`, `layoutFull`, `link`, and `border`. Build or revise `windowData` with `dot-canvas-designer`.
+For Canvas API sending, parameters include `taskType`, `refreshNow`, `taskKey`, `taskAlias`, `data`, `windowData`, `layoutFull`, `link`, and `border`. Build or revise `windowData` with `dot-canvas-designer`. Set the target list with top-level `taskType`, outside `data`.
+
+For all three content APIs, `taskKey` selects a matching API item only within `taskType`; other lists are not searched. Without `taskKey`, update the first matching API item in that list. Fixed updates preserve the configured times and display at the next scheduled refresh, including when the item is already displayed. `refreshNow` is ignored for fixed content. Do not promise an immediate fixed-content display or issue a separate next-content command to force it.
 
 For device settings, parameters include `alias`, `location`, `timezone`, `interval`, and `sleep`. Timezones must be one of the keys returned by `GET /api/authV2/open/timezones`. Both `interval.powerMs` and `interval.batteryMs` must be 60,000-43,200,000 ms in whole-minute multiples. The battery interval controls automatic wake and content refresh timing. `sleep.start` and `sleep.end` use local `HH:mm` time in the device timezone, and an end time earlier than start means the next day.
 

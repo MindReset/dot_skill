@@ -30,4 +30,4 @@ assignees: ""
 
 ## Device context, if relevant
 
-<!-- Product/model and firmware version, without identifiers. For Text/Image/Canvas API sends, does the matching content item already exist in the Dot App loop task? For local display or firmware work, identify that route instead. -->
+<!-- Product/model and firmware version, without identifiers. For Text/Image/Canvas API sends, does the matching content item already exist in the selected Dot App loop or fixed list, and which taskType was sent? For fixed content, has its next scheduled refresh occurred? For local display or firmware work, identify that route instead. -->

@@ -29,7 +29,8 @@ Please include:
 - Your operating system and Python version
 - The command you ran, with API keys and device IDs removed
 - The HTTP status code and error response, if any
-- Whether the matching Text API, Image API, or Canvas API content item already exists in the Dot. App Content Studio loop task
+- Whether the matching Text API, Image API, or Canvas API item already exists in the selected loop or fixed list, and which `taskType` was sent
+- For fixed content, its configured times and whether the next scheduled refresh has occurred; `refreshNow` does not refresh fixed content immediately
 
 For MCP issues, also include whether you used `pipx`, `uvx`, or an installed `dot-mcp` command. Do not include the value of `DOT_API_KEY`.
 

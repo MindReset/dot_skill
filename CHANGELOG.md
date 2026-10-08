@@ -2,6 +2,12 @@
 
 All notable changes to Dot Skill will be documented in this file.
 
+## Unreleased
+
+- Added `taskType: "loop" | "fixed"` to Text, Image, and Canvas API schemas, MCP inputs, and sending scripts. Omitting it keeps the loop-list default.
+- Added `--task-type` to sending scripts; Canvas payload files retain their target list unless the flag overrides it.
+- Documented fixed-list updates, which preserve display times and wait for the next scheduled refresh regardless of `refreshNow`.
+
 ## 0.2.0 - 2026-08-20
 
 - Added the shared `dot_mcp` Python runtime with one Dot. client and Canvas validator.

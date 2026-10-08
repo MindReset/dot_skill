@@ -42,6 +42,8 @@ def build_payload(args):
         payload["border"] = args.border
     if args.task_key is not None:
         payload["taskKey"] = args.task_key
+    if args.task_type is not None:
+        payload["taskType"] = args.task_type
     if args.task_alias is not None:
         payload["taskAlias"] = args.task_alias
     if args.refresh_now is None:
@@ -70,6 +72,7 @@ def main():
     parser.add_argument("--refresh-now", action="store_true", default=None)
     parser.add_argument("--no-refresh-now", action="store_false", dest="refresh_now")
     parser.add_argument("--task-key")
+    parser.add_argument("--task-type", choices=["loop", "fixed"], help="Override the payload target list; omitted preserves payload taskType. Fixed content waits for its next scheduled refresh.")
     parser.add_argument("--task-alias")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()

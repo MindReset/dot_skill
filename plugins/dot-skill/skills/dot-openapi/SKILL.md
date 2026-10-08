@@ -16,7 +16,7 @@ Prefer the split skills:
   - check device status
   - switch to next content
   - list tasks
-  - send Text API, Image API, or a finished Canvas API payload
+  - send Text API, Image API, or a finished Canvas API payload to a loop or fixed list
 - Use `dot-canvas-designer` for Canvas design:
   - build or revise `windowData`
   - design Canvas cards, dashboards, and status panels

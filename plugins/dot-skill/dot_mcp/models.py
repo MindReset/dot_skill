@@ -82,8 +82,9 @@ class TaskAliasInput(DotInputModel):
 
 
 class TextContentInput(TaskAliasInput):
-    refreshNow: bool = True
-    taskKey: str | None = None
+    taskType: Literal["loop", "fixed"] = "loop"
+    refreshNow: bool = Field(default=True, description="Refresh loop content immediately. Ignored for fixed content, which waits for its next scheduled refresh.")
+    taskKey: str | None = Field(default=None, description="Matching API item key within taskType. Omit to update the first matching item in that list.")
     title: str | None = None
     message: str | None = None
     signature: str | None = None
@@ -109,8 +110,9 @@ DitherKernel = Literal[
 
 class ImageContentInput(TaskAliasInput):
     image: str
-    refreshNow: bool = True
-    taskKey: str | None = None
+    taskType: Literal["loop", "fixed"] = "loop"
+    refreshNow: bool = Field(default=True, description="Refresh loop content immediately. Ignored for fixed content, which waits for its next scheduled refresh.")
+    taskKey: str | None = Field(default=None, description="Matching API item key within taskType. Omit to update the first matching item in that list.")
     link: str | None = None
     border: Literal[0, 1] = 0
     ditherType: DitherType = "DIFFUSION"
@@ -118,8 +120,9 @@ class ImageContentInput(TaskAliasInput):
 
 
 class CanvasContentInput(TaskAliasInput):
-    refreshNow: bool = True
-    taskKey: str | None = None
+    taskType: Literal["loop", "fixed"] = "loop"
+    refreshNow: bool = Field(default=True, description="Refresh loop content immediately. Ignored for fixed content, which waits for its next scheduled refresh.")
+    taskKey: str | None = Field(default=None, description="Matching API item key within taskType. Omit to update the first matching item in that list.")
     data: dict[str, Any] | None = None
     windowData: dict[str, Any]
     layoutFull: dict[str, Any] | None = None

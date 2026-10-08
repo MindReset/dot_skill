@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dot-skill"
-version = "0.2.0"
+version = "0.3.0"
 description = "Dot. device tools, Canvas validation, and a local MCP server"
 readme = "README.md"
 requires-python = ">=3.10"

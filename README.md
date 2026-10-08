@@ -20,6 +20,7 @@ A portable Agent Skill and local MCP server for AI agents to interact with Dot. 
 Dot Skill allows you to:
 
 - **Control device content**: Display text, images, Canvas API layouts, and other content on your Dot. devices
+- **Update scheduled content**: Send Text, Image, and Canvas API content to a fixed list and keep its configured display times
 - **Design Canvas layouts**: Build `windowData` cards, dashboards, list views, conditions, and formatting with a dedicated Canvas designer skill
 - **Name API content**: Set a task alias for text, image, and Canvas API items so they are easy to identify
 - **Query device status**: Get real-time information about device battery, WiFi signal, and current display
@@ -50,6 +51,8 @@ The Canvas designer includes [content planning](skills/dot-canvas-designer/refer
 - Python 3.10+ installed locally (for the helper scripts or MCP server)
 
 ## Installation
+
+Fixed-list updates require version 0.3.0 or later of your installed plugin, skills, and MCP server. Update or reinstall using the original installation method, then restart your agent and MCP server. For GPT Actions or OpenAPI-compatible tools, re-import the latest OpenAPI schema.
 
 ### Install as a Codex plugin
 
@@ -183,6 +186,8 @@ The `skills/dot-device-openapi/scripts/` directory contains Python helper script
 All helper scripts use the shared `dot_mcp` client and Canvas validator. Run `python scripts/sync_bundle.py --check` before publishing to detect drift in the portable plugin bundle.
 
 Text, image, and Canvas helper scripts support `--task-alias` to set the human-readable task name shown in the device task list.
+
+Use `--task-type fixed` to update a fixed-list item. `taskKey` selects an item within that list; without it, the first matching API item is updated. Fixed content waits for its next scheduled refresh, even if it is currently displayed or `refreshNow` is `true`. Canvas `--payload` keeps the file's `taskType` unless an explicit `--task-type` overrides it. Omitting `taskType` defaults to `loop`.
 
 ## Resources
 

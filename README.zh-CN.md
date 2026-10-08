@@ -20,6 +20,7 @@
 Dot Skill 允许您：
 
 - **控制设备内容**：在 Dot. 设备上显示文本、图像、画板 API 布局等内容
+- **更新定时内容**：将文本、图像和画板 API 内容写入固定列表，按已设时间显示
 - **设计画板布局**：使用独立 Canvas designer skill 构建 `windowData` 卡片、仪表盘、列表、条件和格式化
 - **命名 API 内容**：为文本、图像和画板 API 内容设置任务别名，方便在任务列表中区分
 - **查询设备状态**：获取设备电池、WiFi 信号和当前显示内容的实时信息
@@ -50,6 +51,8 @@ Canvas 设计技能新增[内容规划](skills/dot-canvas-designer/references/co
 - 本地已安装 Python 3.10+（用于辅助脚本或 MCP Server）
 
 ## 安装
+
+使用固定列表更新功能，需要将已安装的插件、Skill 和 MCP Server 更新至 0.3.0 或更新版本。请按原安装方式更新或重新安装，然后重启 agent 和 MCP Server。GPT Actions 或兼容 OpenAPI 的工具需要重新导入最新 OpenAPI schema。
 
 ### 作为 Codex 插件安装
 
@@ -183,6 +186,8 @@ ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canva
 所有辅助脚本都使用共享的 `dot_mcp` 客户端和 Canvas 校验器。发布前运行 `python scripts/sync_bundle.py --check`，检查 portable plugin bundle 是否发生漂移。
 
 文本、图像和画板辅助脚本都支持 `--task-alias`，用于设置设备任务列表中显示的可读任务名称。
+
+使用 `--task-type fixed` 更新固定列表中的内容。`taskKey` 只选择该列表内的内容；省略时更新第一个对应 API 内容。固定内容会在下一次计划刷新时显示，即使它正在显示或 `refreshNow` 为 `true` 也不会立即刷新。Canvas 使用 `--payload` 时会保留文件里的 `taskType`，只有显式传入 `--task-type` 才覆盖。省略 `taskType` 时默认使用 `loop`。
 
 ## 资源
 

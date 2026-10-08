@@ -20,6 +20,7 @@ AI アシスタントが Dot. デバイスと連携するための Agent Skill �
 Dot Skill を使用すると、以下のことができます：
 
 - **デバイスコンテンツの制御**: Dot. デバイスにテキスト、画像、Canvas API レイアウトなどのコンテンツを表示
+- **定時コンテンツの更新**: Text、Image、Canvas API の内容を固定リストに送り、設定した表示時刻を維持
 - **Canvas レイアウトの設計**: 専用の Canvas designer skill で `windowData` カード、ダッシュボード、リスト、条件、フォーマットを作成
 - **API コンテンツの命名**: テキスト、画像、Canvas API の内容にタスク別名を設定して一覧で見分けやすくする
 - **デバイス状態の確認**: デバイスのバッテリー、WiFi 信号、現在の表示内容のリアルタイム情報を取得
@@ -49,6 +50,8 @@ Canvas デザインスキルには[コンテンツ設計](skills/dot-canvas-desi
 - ローカルにインストールされた `python3`（ヘルパースクリプト使用時）
 
 ## インストール
+
+固定リストの更新には、インストール済みのプラグイン、Skill、MCP Server のバージョン 0.3.0 以降が必要です。元のインストール方法で更新または再インストールし、エージェントと MCP Server を再起動してください。GPT Actions や OpenAPI 対応ツールでは、最新の OpenAPI schema を再インポートしてください。
 
 ### `npx skills add` でインストール（推奨）
 
@@ -126,6 +129,8 @@ Claude Code、CodeBuddy、Cursor、VS Code、Kimi Code、Hermes、OpenCode、Gem
 - `switch_next.py`: 次のコンテンツに切り替え
 
 テキスト、画像、Canvas のヘルパースクリプトは `--task-alias` に対応しており、デバイスのタスク一覧に表示される読みやすいタスク名を設定できます。
+
+固定リストの内容を更新するには `--task-type fixed` を指定します。`taskKey` は選択したリスト内の項目を指定し、省略すると最初の該当 API 項目を更新します。固定コンテンツは、現在表示中でも `refreshNow` が `true` でも、次回の予定された更新を待ちます。Canvas の `--payload` ではファイル内の `taskType` を保持し、明示した `--task-type` だけが上書きします。`taskType` を省略すると `loop` になります。
 
 ## リソース
 

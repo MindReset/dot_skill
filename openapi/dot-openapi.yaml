@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Dot Skill OpenAPI
-  version: 0.2.0
+  version: 0.3.0
   summary: Control Dot. devices through the Dot. OpenAPI.
   description: |
     Dot Skill exposes OpenAPI operations for listing Dot. devices, checking device status,
@@ -200,7 +200,8 @@ paths:
       summary: Display text content.
       description: |
         Display text content on a Dot. device. The device must already have a Text API
-        content item in its loop task in Dot. App Content Studio.
+        content item in the selected loop or fixed list in Dot. App Content Studio.
+        Fixed content waits for its next scheduled refresh, even when refreshNow is true.
       parameters:
         - $ref: "#/components/parameters/DeviceId"
       requestBody:
@@ -230,7 +231,8 @@ paths:
       summary: Display image content.
       description: |
         Display PNG image content on a Dot. device. The device must already have an Image API
-        content item in its loop task in Dot. App Content Studio.
+        content item in the selected loop or fixed list in Dot. App Content Studio.
+        Fixed content waits for its next scheduled refresh, even when refreshNow is true.
       parameters:
         - $ref: "#/components/parameters/DeviceId"
       requestBody:
@@ -260,7 +262,8 @@ paths:
       summary: Display Canvas API content.
       description: |
         Display a custom Canvas API layout on a Dot. device. The device must already have a
-        Canvas API content item in its loop task in Dot. App Content Studio.
+        Canvas API content item in the selected loop or fixed list in Dot. App Content Studio.
+        Fixed content waits for its next scheduled refresh, even when refreshNow is true.
       parameters:
         - $ref: "#/components/parameters/DeviceId"
       requestBody:
@@ -644,11 +647,18 @@ components:
       type: object
       additionalProperties: false
       properties:
+        taskType:
+          type: string
+          enum: [loop, fixed]
+          default: loop
+          description: List containing the Text API item to update.
         refreshNow:
           type: boolean
           default: true
+          description: Refresh loop content immediately. Ignored for fixed content, which waits for its next scheduled refresh.
         taskKey:
           type: string
+          description: Text API item key within the selected list. Omit to update its first Text API item. Other lists are not searched.
         taskAlias:
           $ref: "#/components/schemas/TaskAlias"
         title:
@@ -711,11 +721,18 @@ components:
       required:
         - image
       properties:
+        taskType:
+          type: string
+          enum: [loop, fixed]
+          default: loop
+          description: List containing the Image API item to update.
         refreshNow:
           type: boolean
           default: true
+          description: Refresh loop content immediately. Ignored for fixed content, which waits for its next scheduled refresh.
         taskKey:
           type: string
+          description: Image API item key within the selected list. Omit to update its first Image API item. Other lists are not searched.
         taskAlias:
           $ref: "#/components/schemas/TaskAlias"
         image:
@@ -741,11 +758,18 @@ components:
       required:
         - windowData
       properties:
+        taskType:
+          type: string
+          enum: [loop, fixed]
+          default: loop
+          description: List containing the Canvas API item to update. Set at the top level, outside data.
         refreshNow:
           type: boolean
           default: true
+          description: Refresh loop content immediately. Ignored for fixed content, which waits for its next scheduled refresh.
         taskKey:
           type: string
+          description: Canvas API item key within the selected list. Omit to update its first Canvas API item. Other lists are not searched.
         taskAlias:
           $ref: "#/components/schemas/TaskAlias"
         data:

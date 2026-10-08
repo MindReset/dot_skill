@@ -189,6 +189,9 @@ def validate_canvas_payload(payload: Any) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise ValueError("Canvas payload must be a JSON object")
 
+    if "taskType" in payload and payload["taskType"] not in ("loop", "fixed"):
+        raise ValueError("taskType must be loop or fixed")
+
     data = payload.get("data", {})
     if data is None:
         data = {}

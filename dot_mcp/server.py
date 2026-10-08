@@ -110,7 +110,7 @@ def dot_switch_next_content(device_id: str) -> Any:
 
 @mcp.tool(
     name="dot_send_text",
-    description="[write; display change] Send text content to a Dot. device that has a matching Text API item. The request is sent once without automatic retries.",
+    description="[write; content update] Send text to a matching Text API item in the selected loop or fixed list (default loop). Fixed content waits for its next scheduled refresh regardless of refreshNow. Sent once without automatic retries.",
     annotations=WRITE_ANNOTATIONS,
 )
 def dot_send_text(device_id: str, content: TextContentInput) -> Any:
@@ -120,7 +120,7 @@ def dot_send_text(device_id: str, content: TextContentInput) -> Any:
 
 @mcp.tool(
     name="dot_send_image",
-    description="[write; display change] Send image content to a Dot. device that has a matching Image API item. The request is sent once without automatic retries.",
+    description="[write; content update] Send an image to a matching Image API item in the selected loop or fixed list (default loop). Fixed content waits for its next scheduled refresh regardless of refreshNow. Sent once without automatic retries.",
     annotations=WRITE_ANNOTATIONS,
 )
 def dot_send_image(device_id: str, content: ImageContentInput) -> Any:
@@ -139,7 +139,7 @@ def dot_validate_canvas(payload: CanvasContentInput) -> dict[str, Any]:
 
 @mcp.tool(
     name="dot_send_canvas",
-    description="[write; display change] Validate and send a Canvas payload to a Dot. device that has a matching Canvas API item. The request is sent once without automatic retries.",
+    description="[write; content update] Validate and send Canvas content to a matching Canvas API item in the selected loop or fixed list (default loop). Fixed content waits for its next scheduled refresh regardless of refreshNow. Sent once without automatic retries.",
     annotations=WRITE_ANNOTATIONS,
 )
 def dot_send_canvas(device_id: str, payload: CanvasContentInput) -> Any:

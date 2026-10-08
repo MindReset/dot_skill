@@ -130,4 +130,4 @@ Device-changing tools:
 - `dot_send_image`
 - `dot_send_canvas`
 
-Write requests are not automatically retried. Text, image, and Canvas requests require a matching API content item in the device's loop task. `dot_validate_canvas` performs the shared local Canvas checks without contacting the service.
+Write requests are not automatically retried. Text, image, and Canvas requests require a matching API content item in the selected loop or fixed list. Set `taskType: "fixed"` to update a fixed item; the default is `loop`. `taskKey` searches only that list, and omitting it updates the first matching API item. Fixed content waits for its next scheduled refresh regardless of `refreshNow`, including when it is currently displayed. For Canvas, set `taskType` at the payload top level. `dot_validate_canvas` performs the shared local Canvas checks without contacting the service.
