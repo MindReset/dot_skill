@@ -65,7 +65,7 @@ Use `GET` to read editable settings. Use `POST` to update one or more settings; 
 	"location": "Desk",
 	"timezone": "Asia/Shanghai",
 	"interval": {
-		"powerMs": 300000,
+		"powerMs": 900000,
 		"batteryMs": 10800000
 	},
 	"sleep": {
@@ -81,8 +81,8 @@ Use `GET` to read editable settings. Use `POST` to update one or more settings; 
 | `alias` | string \| null | No | Device alias. Send `null` or an empty string to clear it |
 | `location` | string \| null | No | Device location. Send `null` or an empty string to clear it |
 | `timezone` | string | No | Must be a key returned by `GET /api/authV2/open/timezones` |
-| `interval.powerMs` | number | No | Power refresh interval in milliseconds. Must be 60,000-43,200,000 and a multiple of 60,000 |
-| `interval.batteryMs` | number | No | Battery automatic wake and refresh interval in milliseconds. Must be 60,000-43,200,000 and a multiple of 60,000 |
+| `interval.powerMs` | number | No | Power refresh interval in milliseconds, in multiples of 60,000; max 43,200,000. Min: Quote/0, Quote/1 and M401 60,000; Rand/0 900,000 |
+| `interval.batteryMs` | number | No | Battery automatic wake and refresh interval in milliseconds, in multiples of 60,000; max 43,200,000. Min: Quote/0 and Quote/1 60,000; Rand/0 3,600,000; M401 1,800,000 |
 | `sleep.enabled` | boolean | Yes, when `sleep` is sent | Enable or disable sleep |
 | `sleep.start` | string | Yes, when `sleep` is sent | Local `HH:mm` start time in the device timezone |
 | `sleep.end` | string | Yes, when `sleep` is sent | Local `HH:mm` end time in the device timezone. If earlier than start, it means the next day |
